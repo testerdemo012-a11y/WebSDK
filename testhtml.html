@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Setup and Redirect</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        video {
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Open Back Camera and Redirect</h1>
+
+    <video id="video" autoplay></video>
+
+    <input type="text" id="urlInput" placeholder="Enter URL to open with camera" />
+    <button id="redirectButton">Go to Test Site</button>
+
+    <script>
+        function startCamera() {
+            // Request camera access and use the back camera (environment)
+            navigator.mediaDevices.getUserMedia({
+                video: { facingMode: { exact: "environment" } }
+            })
+            .then(function(stream) {
+                const videoElement = document.getElementById('video');
+                videoElement.srcObject = stream;
+                videoElement.style.display = 'block';  // Show video
+            })
+            .catch(function(error) {
+                console.error("Error accessing camera: ", error);
+                alert("Unable to access camera.");
+            });
+        }
+
+        // Start camera on page load
+        window.onload = function() {
+            startCamera();
+        };
+
+        // Handle redirection when button is clicked
+        document.getElementById('redirectButton').onclick = function() {
+            const url = document.getElementById('urlInput').value.trim();
+            if (url) {
+                window.location.href = url;  // Redirect to the provided URL
+            } else {
+                alert("Please enter a valid URL.");
+            }
+        };
+
+    </script>
+
+</body>
+</html>
