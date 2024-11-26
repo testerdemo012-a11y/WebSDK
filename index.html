@@ -3,41 +3,97 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vida SDK Integration</title>
+  <title>Enhanced Liveness Detection</title>
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="container">
-  <h1 class="title">Start Liveness Detection</h1>
+<body>
+  <div class="container">
+    <h1 class="title">Liveness Detection</h1>
 
-  <div class="form">
-    <label for="partnerTransactionId">Partner Transaction ID:</label>
-    <input type="text" id="partnerTransactionId" class="input" placeholder="Enter Partner Transaction ID">
+    <div class="form">
+      <!-- Text Inputs -->
+      <label for="partnerTransactionId">Partner Transaction ID:</label>
+      <input type="text" id="partnerTransactionId" placeholder="Enter Partner Transaction ID">
 
-    <label for="localeConfigs">Locale Configs (JSON):</label>
-    <textarea id="localeConfigs" class="textarea" placeholder='{"language": "en", "region": "US"}'></textarea>
+      <label for="localeConfigs">Locale Configs (JSON):</label>
+      <textarea id="localeConfigs" placeholder='{"language": "en", "region": "US"}'></textarea>
 
-    <label for="themeConfigs">Theme Configs (JSON):</label>
-    <textarea id="themeConfigs" class="textarea" placeholder='{"primaryColor": "#007BFF", "secondaryColor": "#6c757d"}'></textarea>
+      <label for="themeConfigs">Theme Configs (JSON):</label>
+      <textarea id="themeConfigs" placeholder='{"primaryColor": "#3498db", "secondaryColor": "#2ecc71"}'></textarea>
+
+      <!-- Dropdown -->
+      <label for="languageToggle">Language:</label>
+      <select id="languageToggle">
+        <option value="EN">English</option>
+        <option value="ID">Bahasa</option>
+      </select>
+
+<!-- Checkboxes -->
+<div class="checkbox-container">
+  <div class="checkbox-group">
+    <input type="checkbox" id="skipTutorial">
+    <label for="skipTutorial">Skip Tutorial Screen</label>
   </div>
-
-  <button id="startLiveness" class="button">Start Liveness</button>
-  <div id="vida-container" class="vida-container">
-    <p>Click the button above to start liveness detection.</p>
+  <div class="checkbox-group">
+    <input type="checkbox" id="skipSelfieReview">
+    <label for="skipSelfieReview">Skip Selfie Review Screen</label>
   </div>
-  <div id="api-response" class="api-response"></div>
+</div>
+
+      <!-- Additional Fields -->
+      <label for="cameraFrameShape">Camera Frame Shape:</label>
+      <select id="cameraFrameShape">
+        <option value="oval">Oval</option>
+        <option value="circle">Circle</option>
+        <option value="square">Square</option>
+        <option value="rectangle">Rectangle</option>
+      </select>
+
+      <label for="maxRetryAttempts">Max Retry Attempts:</label>
+      <input type="number" id="maxRetryAttempts" placeholder="Enter Max Retry Attempts">
+
+      <label for="detectionTimeout">Detection Timeout (in seconds):</label>
+      <input type="number" id="detectionTimeout" placeholder="Enter Detection Timeout">
+    </div>
+
+    <!-- Button -->
+    <button id="startLiveness" class="button">Start Liveness</button>
+
+    <!-- Loader -->
+    <div id="loader" class="loader"></div>
+
+    <!-- Response Containers -->
+    <div id="vida-container" class="vida-container">Click the button to start liveness detection.</div>
+    <div id="api-response" class="api-response"></div>
+  </div>
 
   <script type="module">
     import { VidaSDK } from 'https://web-sdk.vida.id/0.0.5/qa/vida-sdk-ui.js';
 
     document.getElementById('startLiveness').addEventListener('click', () => {
+      const loader = document.getElementById('loader');
+      loader.style.display = 'block';
+
       const responseDiv = document.getElementById('api-response');
       responseDiv.style.display = 'none';
       responseDiv.textContent = '';
 
+      setTimeout(() => {
+        loader.style.display = 'none'; // Simulating SDK load time
+      }, 2000);
+
       // Get input values
       const partnerTransactionId = document.getElementById('partnerTransactionId').value;
+      const locale = document.getElementById('languageToggle').value;
+      const skipTutorialScreen = document.getElementById('skipTutorial').checked;
+      const skipSelfieReviewScreen = document.getElementById('skipSelfieReview').checked;
+      const cameraFrameShape = document.getElementById('cameraFrameShape').value;
+      const maxRetryAttempts = parseInt(document.getElementById('maxRetryAttempts').value || 3);
+      const detectionTimeout = parseInt(document.getElementById('detectionTimeout').value);
       const localeConfigs = document.getElementById('localeConfigs').value;
       const themeConfigs = document.getElementById('themeConfigs').value;
+
+      console.log('detectionTimeout', detectionTimeout);
 
       try {
         // Parse JSON inputs
@@ -46,11 +102,20 @@
 
         if (VidaSDK) {
           VidaSDK.init({
-            token: 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJjU2w2LS1GWjE3MGJkZE1nU3NlMEhiTG10cWREYVI5aWdsNldRdkdhZVVrIn0.eyJleHAiOjE3MzI2MjM1MDQsImlhdCI6MTczMjYwNTUwNCwiYXV0aF90aW1lIjoxNzMyNjA1NTAzLCJqdGkiOiI5ZmViMDYyNy02ZDlhLTRlNDYtOTI0YS1hMmFiNTRlZGQ2MmEiLCJpc3MiOiJodHRwczovL3FhLXNzby5ucC52aWRhLmlkL2F1dGgvcmVhbG1zL3ZpZGEiLCJhdWQiOlsidmlkYS1pZGktbWFpbi1zZXJ2aWNlIiwidmlkYS1pZHZlcmlmeS1zZXJ2aWNlIl0sInN1YiI6ImFlZmY0MTYxLWQwY2ItNDQ5YS05YjY2LTQxOGExMzRjZjgyMyIsInR5cCI6IkJlYXJlciIsImF6cCI6InZpZGEtZmVhdHVyZXMtZGVtby13ZWIiLCJub25jZSI6IjRiYTQyMDNmLTIyOTgtNDU5YS04ZTlhLTdhOTNkNWE1M2MwYiIsInNlc3Npb25fc3RhdGUiOiJmNTI0ZjBiZC0wZmU3LTRiZWUtYjU5NS1mYmQzYjI2YmQ4M2QiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cHM6Ly9xYS1hcHAubnAudmlkYS5pZCJdLCJyZXNvdXJjZV9hY2Nlc3MiOnsidmlkYS1pZGktbWFpbi1zZXJ2aWNlIjp7InJvbGVzIjpbImNoZWNrX2ltYWdlX2hhY2tuZXNzIiwid2ViX3VzZXJfbGl2ZW5lc3MiLCJzZXJ2aWNlX3VzZXJfd2ViX2VreWMiXX0sInZpZGEtaWR2ZXJpZnktc2VydmljZSI6eyJyb2xlcyI6WyJkZW1vZy12MiIsIm9jci1rdHAiLCJrdHAtZmFjZS1tYXRjaCJdfX0sInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJzaWQiOiJmNTI0ZjBiZC0wZmU3LTRiZWUtYjU5NS1mYmQzYjI2YmQ4M2QiLCJjbGllbnRJZCI6InZpZGEtZmVhdHVyZXMtZGVtby13ZWIiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6InNhZ2FyIGNoaWxsYWwiLCJwcm9kSWQiOiI5YmU4N2U3OC04MzIwLTRhODQtYjIyMS0wMjE4OGY1ZTQxNDYiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJzYWdhci5jaGlsbGFsQHZpZGEuaWQiLCJnaXZlbl9uYW1lIjoic2FnYXIiLCJmYW1pbHlfbmFtZSI6ImNoaWxsYWwiLCJlbWFpbCI6InNhZ2FyLmNoaWxsYWxAdmlkYS5pZCJ9.BfYHrDej33udSQhdrfr_MxQM37RNtsSBs_nInmT8eTypYs8M7sIjpErmyvHhCGeS5WrBZMsCPXKDx3BCQEoPJ_sVRK01HsyWZIJzqWZ2mGaWQF3AIoundCu9spKFm-bm4uk2Myp3-FiptUXR-7RpPSQXk0a63uabf1rdlPp8nmYrGY6f8XBlxG9XdT90xSUhjl2xfX2ZUXT4GSCeMSdDX0Z7PPFvb6Rs7ThTKqHvi_Jsf1AZqR3LSWnQmI1kOqkGOVxu0AXY8PoDly6HVt4MIWcwlramxchX9jyOoadOr2M3F-Qr3JXRCbAkp8dfmKuCc7nRm2YQrqB9ymsCmtueAw', // Replace with your client ID
+            token: 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJjU2w2LS1GWjE3MGJkZE1nU3NlMEhiTG10cWREYVI5aWdsNldRdkdhZVVrIn0.eyJleHAiOjE3MzI2NDU2MTksImlhdCI6MTczMjYyNzYxOSwiYXV0aF90aW1lIjoxNzMyNjI3NjE4LCJqdGkiOiI2ODRlNjc3OS0yNjgzLTQ2MWQtYjg1Ny02YjMzM2I3ZDllODgiLCJpc3MiOiJodHRwczovL3FhLXNzby5ucC52aWRhLmlkL2F1dGgvcmVhbG1zL3ZpZGEiLCJhdWQiOlsidmlkYS1pZGktbWFpbi1zZXJ2aWNlIiwidmlkYS1pZHZlcmlmeS1zZXJ2aWNlIl0sInN1YiI6ImFlZmY0MTYxLWQwY2ItNDQ5YS05YjY2LTQxOGExMzRjZjgyMyIsInR5cCI6IkJlYXJlciIsImF6cCI6InZpZGEtZmVhdHVyZXMtZGVtby13ZWIiLCJub25jZSI6Ijk0YTBkZDBjLWEyODQtNGMxNS04NjQyLWE0ZDFhNTQzNDQzNSIsInNlc3Npb25fc3RhdGUiOiI1N2UyOTU3ZC00YjU2LTQyNGMtOGY0My1jMWQzMWM4ZTgxZTAiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cHM6Ly9xYS1hcHAubnAudmlkYS5pZCJdLCJyZXNvdXJjZV9hY2Nlc3MiOnsidmlkYS1pZGktbWFpbi1zZXJ2aWNlIjp7InJvbGVzIjpbImNoZWNrX2ltYWdlX2hhY2tuZXNzIiwid2ViX3VzZXJfbGl2ZW5lc3MiLCJzZXJ2aWNlX3VzZXJfd2ViX2VreWMiXX0sInZpZGEtaWR2ZXJpZnktc2VydmljZSI6eyJyb2xlcyI6WyJkZW1vZy12MiIsIm9jci1rdHAiLCJrdHAtZmFjZS1tYXRjaCJdfX0sInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJzaWQiOiI1N2UyOTU3ZC00YjU2LTQyNGMtOGY0My1jMWQzMWM4ZTgxZTAiLCJjbGllbnRJZCI6InZpZGEtZmVhdHVyZXMtZGVtby13ZWIiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6InNhZ2FyIGNoaWxsYWwiLCJwcm9kSWQiOiI5YmU4N2U3OC04MzIwLTRhODQtYjIyMS0wMjE4OGY1ZTQxNDYiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJzYWdhci5jaGlsbGFsQHZpZGEuaWQiLCJnaXZlbl9uYW1lIjoic2FnYXIiLCJmYW1pbHlfbmFtZSI6ImNoaWxsYWwiLCJlbWFpbCI6InNhZ2FyLmNoaWxsYWxAdmlkYS5pZCJ9.ZKnjEvQhMtAHd4LN3Ax00X2IIic9bQRriSJXR36Y1KNaORp6OuAGfUJA-8R9bu3rhTRb_4kLtfNwxGUs5nLbgccd-oECEObDtTKvFc05zASpawWdFXA-VyzPm_ftj4oPyD6ehVS6rOimiifnv4y_9VYxnCGIBHcRhUHNBcO28KoIaQ-DBboZ5hnuZ9-injBkHPmp2Uk425tEWPkt63Bc6sR9mKqwKcyEzV327-w7a1lZDBEISu40FLVnTOsGzPlmQ7LoBEZNtFicJXvEOyzltLx1IHz9gN_7kxuiqYvd3082vkx7qyvU2uacenI3kbJn23cn3KaeWB99NlVl1aEOAg',
             signingKey: 'e67c72e265b6288d9652a14099b64dc0b2939cc3a47873656a729431946691a1', 
+            locale,
+            partnerTransactionId,
             localeConfigs: parsedLocaleConfigs,
             themeConfigs: parsedThemeConfigs,
-            partnerTransactionId: partnerTransactionId,
+            workflowConfigs: {
+              liveness: {
+                skipTutorialScreen,
+                skipSelfieReviewScreen,
+                cameraFrameShape,
+                maxRetryAttempts,
+              },
+            },
             onComplete: (apiResponse) => {
               console.log('API Response:', apiResponse);
               responseDiv.style.display = 'block';
