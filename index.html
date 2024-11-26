@@ -1,86 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camera Setup and Redirect</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-            margin: 0;
-        }
-        video {
-            width: 100%;
-            max-width: 400px;
-            border: 1px solid #ccc;
-            margin-bottom: 20px;
-        }
-        input[type="text"] {
-            padding: 10px;
-            width: 300px;
-            margin-bottom: 10px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vida SDK Integration</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="container">
+  <h1 class="title">Start Liveness Detection</h1>
 
-    <h1>Open Back Camera and Redirect</h1>
+  <div class="form">
+    <label for="partnerTransactionId">Partner Transaction ID:</label>
+    <input type="text" id="partnerTransactionId" class="input" placeholder="Enter Partner Transaction ID">
 
-    <video id="video" autoplay></video>
+    <label for="localeConfigs">Locale Configs (JSON):</label>
+    <textarea id="localeConfigs" class="textarea" placeholder='{"language": "en", "region": "US"}'></textarea>
 
-    <input type="text" id="urlInput" placeholder="Enter URL to open with camera" />
-    <button id="redirectButton">Go to Test Site</button>
+    <label for="themeConfigs">Theme Configs (JSON):</label>
+    <textarea id="themeConfigs" class="textarea" placeholder='{"primaryColor": "#007BFF", "secondaryColor": "#6c757d"}'></textarea>
+  </div>
 
-    <script>
-        function startCamera() {
-            // Request camera access and use the back camera (environment)
-            navigator.mediaDevices.getUserMedia({
-                video: { facingMode: { exact: "environment" } }
-            })
-            .then(function(stream) {
-                const videoElement = document.getElementById('video');
-                videoElement.srcObject = stream;
-                videoElement.style.display = 'block';  // Show video
-            })
-            .catch(function(error) {
-                console.error("Error accessing camera: ", error);
-                alert("Unable to access camera.");
-            });
+  <button id="startLiveness" class="button">Start Liveness</button>
+  <div id="vida-container" class="vida-container">
+    <p>Click the button above to start liveness detection.</p>
+  </div>
+  <div id="api-response" class="api-response"></div>
+
+  <script type="module">
+    import { VidaSDK } from 'https://web-sdk.vida.id/0.0.5/qa/vida-sdk-ui.js';
+
+    document.getElementById('startLiveness').addEventListener('click', () => {
+      const responseDiv = document.getElementById('api-response');
+      responseDiv.style.display = 'none';
+      responseDiv.textContent = '';
+
+      // Get input values
+      const partnerTransactionId = document.getElementById('partnerTransactionId').value;
+      const localeConfigs = document.getElementById('localeConfigs').value;
+      const themeConfigs = document.getElementById('themeConfigs').value;
+
+      try {
+        // Parse JSON inputs
+        const parsedLocaleConfigs = JSON.parse(localeConfigs || '{}');
+        const parsedThemeConfigs = JSON.parse(themeConfigs || '{}');
+
+        if (VidaSDK) {
+          VidaSDK.init({
+            token: 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJjU2w2LS1GWjE3MGJkZE1nU3NlMEhiTG10cWREYVI5aWdsNldRdkdhZVVrIn0.eyJleHAiOjE3MzI2MjM1MDQsImlhdCI6MTczMjYwNTUwNCwiYXV0aF90aW1lIjoxNzMyNjA1NTAzLCJqdGkiOiI5ZmViMDYyNy02ZDlhLTRlNDYtOTI0YS1hMmFiNTRlZGQ2MmEiLCJpc3MiOiJodHRwczovL3FhLXNzby5ucC52aWRhLmlkL2F1dGgvcmVhbG1zL3ZpZGEiLCJhdWQiOlsidmlkYS1pZGktbWFpbi1zZXJ2aWNlIiwidmlkYS1pZHZlcmlmeS1zZXJ2aWNlIl0sInN1YiI6ImFlZmY0MTYxLWQwY2ItNDQ5YS05YjY2LTQxOGExMzRjZjgyMyIsInR5cCI6IkJlYXJlciIsImF6cCI6InZpZGEtZmVhdHVyZXMtZGVtby13ZWIiLCJub25jZSI6IjRiYTQyMDNmLTIyOTgtNDU5YS04ZTlhLTdhOTNkNWE1M2MwYiIsInNlc3Npb25fc3RhdGUiOiJmNTI0ZjBiZC0wZmU3LTRiZWUtYjU5NS1mYmQzYjI2YmQ4M2QiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cHM6Ly9xYS1hcHAubnAudmlkYS5pZCJdLCJyZXNvdXJjZV9hY2Nlc3MiOnsidmlkYS1pZGktbWFpbi1zZXJ2aWNlIjp7InJvbGVzIjpbImNoZWNrX2ltYWdlX2hhY2tuZXNzIiwid2ViX3VzZXJfbGl2ZW5lc3MiLCJzZXJ2aWNlX3VzZXJfd2ViX2VreWMiXX0sInZpZGEtaWR2ZXJpZnktc2VydmljZSI6eyJyb2xlcyI6WyJkZW1vZy12MiIsIm9jci1rdHAiLCJrdHAtZmFjZS1tYXRjaCJdfX0sInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJzaWQiOiJmNTI0ZjBiZC0wZmU3LTRiZWUtYjU5NS1mYmQzYjI2YmQ4M2QiLCJjbGllbnRJZCI6InZpZGEtZmVhdHVyZXMtZGVtby13ZWIiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6InNhZ2FyIGNoaWxsYWwiLCJwcm9kSWQiOiI5YmU4N2U3OC04MzIwLTRhODQtYjIyMS0wMjE4OGY1ZTQxNDYiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJzYWdhci5jaGlsbGFsQHZpZGEuaWQiLCJnaXZlbl9uYW1lIjoic2FnYXIiLCJmYW1pbHlfbmFtZSI6ImNoaWxsYWwiLCJlbWFpbCI6InNhZ2FyLmNoaWxsYWxAdmlkYS5pZCJ9.BfYHrDej33udSQhdrfr_MxQM37RNtsSBs_nInmT8eTypYs8M7sIjpErmyvHhCGeS5WrBZMsCPXKDx3BCQEoPJ_sVRK01HsyWZIJzqWZ2mGaWQF3AIoundCu9spKFm-bm4uk2Myp3-FiptUXR-7RpPSQXk0a63uabf1rdlPp8nmYrGY6f8XBlxG9XdT90xSUhjl2xfX2ZUXT4GSCeMSdDX0Z7PPFvb6Rs7ThTKqHvi_Jsf1AZqR3LSWnQmI1kOqkGOVxu0AXY8PoDly6HVt4MIWcwlramxchX9jyOoadOr2M3F-Qr3JXRCbAkp8dfmKuCc7nRm2YQrqB9ymsCmtueAw', // Replace with your client ID
+            signingKey: 'e67c72e265b6288d9652a14099b64dc0b2939cc3a47873656a729431946691a1', 
+            localeConfigs: parsedLocaleConfigs,
+            themeConfigs: parsedThemeConfigs,
+            partnerTransactionId: partnerTransactionId,
+            onComplete: (apiResponse) => {
+              console.log('API Response:', apiResponse);
+              responseDiv.style.display = 'block';
+              responseDiv.textContent = `API Response: ${JSON.stringify(apiResponse, null, 2)}`;
+            },
+            onError: (apiResponse) => {
+              console.error('API Response:', apiResponse);
+              responseDiv.style.display = 'block';
+              responseDiv.textContent = `Error Response: ${JSON.stringify(apiResponse, null, 2)}`;
+            },
+            containerId: 'vida-container',
+          });
+        } else {
+          console.error('VidaSDK is not available.');
         }
-
-        // Start camera on page load
-        window.onload = function() {
-            startCamera();
-        };
-
-        // Handle redirection when button is clicked
-        document.getElementById('redirectButton').onclick = function() {
-            const url = document.getElementById('urlInput').value.trim();
-            if (url) {
-                window.location.href = url;  // Redirect to the provided URL
-            } else {
-                alert("Please enter a valid URL.");
-            }
-        };
-
-    </script>
-
+      } catch (error) {
+        console.error('Invalid JSON format:', error);
+        alert('Please enter valid JSON in Locale Configs and Theme Configs.');
+      }
+    });
+  </script>
 </body>
 </html>
