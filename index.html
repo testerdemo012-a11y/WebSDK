@@ -89,7 +89,7 @@
       const skipSelfieReviewScreen = document.getElementById('skipSelfieReview').checked;
       const cameraFrameShape = document.getElementById('cameraFrameShape').value;
       const maxRetryAttempts = parseInt(document.getElementById('maxRetryAttempts').value || 3);
-      const detectionTimeout = parseInt(document.getElementById('detectionTimeout').value);
+      const detectionTimeout = parseInt(document.getElementById('detectionTimeout').value || 90);
       const localeConfigs = document.getElementById('localeConfigs').value;
       const themeConfigs = document.getElementById('themeConfigs').value;
 
@@ -114,6 +114,7 @@
                 skipSelfieReviewScreen,
                 cameraFrameShape,
                 maxRetryAttempts,
+                detectionTimeout,
               },
             },
             onComplete: (apiResponse) => {
