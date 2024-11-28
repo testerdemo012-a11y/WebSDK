@@ -65,10 +65,10 @@
     <!-- Response Containers -->
     <div id="vida-container" class="vida-container">Click the button to start liveness detection.</div>
     <div id="api-response" class="api-response"></div>
+    <script src="https://web-sdk.vida.id/0.0.6/qa/vida-sdk-ui.js"></script>
   </div>
 
-  <script type="module">
-    import { VidaSDK } from 'https://web-sdk.vida.id/0.0.6/qa/vida-sdk-ui.js';
+  <script>
 
     document.getElementById('startLiveness').addEventListener('click', () => {
       const loader = document.getElementById('loader');
