@@ -1,75 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Enhanced Liveness Detection</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-  <div class="container">
-    <h1 class="title">Liveness Detection</h1>
+  <div class="container my-4">
+    <h1 class="text-center mb-4">Liveness Detection</h1>
 
-    <div class="form">
-      <!-- Text Inputs -->
-      <label for="partnerTransactionId">Partner Transaction ID:</label>
-      <input type="text" id="partnerTransactionId" placeholder="Enter Partner Transaction ID">
+    <form id="livenessForm">
+      <div class="form-group">
+        <label for="partnerTransactionId">Partner Transaction ID:</label>
+        <input type="text" class="form-control" id="partnerTransactionId" placeholder="Enter Partner Transaction ID">
+      </div>
 
-      <label for="localeConfigs">Locale Configs (JSON):</label>
-      <textarea id="localeConfigs" placeholder='{"language": "en", "region": "US"}'></textarea>
+      <div class="form-group">
+        <label for="localeConfigs">Locale Configs (JSON):</label>
+        <textarea class="form-control" id="localeConfigs" rows="3" placeholder='{"language": "en", "region": "US"}'></textarea>
+      </div>
 
-      <label for="themeConfigs">Theme Configs (JSON):</label>
-      <textarea id="themeConfigs" placeholder='{"primaryColor": "#3498db", "secondaryColor": "#2ecc71"}'></textarea>
+      <div class="form-group">
+        <label for="themeConfigs">Theme Configs (JSON):</label>
+        <textarea class="form-control" id="themeConfigs" rows="3" placeholder='{"primaryColor": "#3498db", "secondaryColor": "#2ecc71"}'></textarea>
+      </div>
 
-      <!-- Dropdown -->
-      <label for="languageToggle">Language:</label>
-      <select id="languageToggle">
-        <option value="EN">English</option>
-        <option value="ID">Bahasa</option>
-      </select>
+      <div class="form-group">
+        <label for="languageToggle">Language:</label>
+        <select class="form-control" id="languageToggle">
+          <option value="EN">English</option>
+          <option value="ID">Bahasa</option>
+        </select>
+      </div>
 
-<!-- Checkboxes -->
-<div class="checkbox-container">
-  <div class="checkbox-group">
-    <input type="checkbox" id="skipTutorial">
-    <label for="skipTutorial">Skip Tutorial Screen</label>
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="skipTutorial">
+        <label class="form-check-label" for="skipTutorial">Skip Tutorial Screen</label>
+      </div>
+
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="skipSelfieReview">
+        <label class="form-check-label" for="skipSelfieReview">Skip Selfie Review Screen</label>
+      </div>
+
+      <div class="form-group">
+        <label for="cameraFrameShape">Camera Frame Shape:</label>
+        <select class="form-control" id="cameraFrameShape">
+          <option value="oval">Oval</option>
+          <option value="circle">Circle</option>
+          <option value="square">Square</option>
+          <option value="rectangle">Rectangle</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="maxRetryAttempts">Max Retry Attempts:</label>
+        <input type="number" class="form-control" id="maxRetryAttempts" placeholder="Enter Max Retry Attempts">
+      </div>
+
+      <div class="form-group">
+        <label for="detectionTimeout">Detection Timeout (in seconds):</label>
+        <input type="number" class="form-control" id="detectionTimeout" placeholder="Enter Detection Timeout">
+      </div>
+
+      <button type="button" id="startLiveness" class="btn btn-primary btn-block">Start Liveness</button>
+
+      <div id="loader" class="loader my-3" style="display:none;"></div>
+
+      <div id="vida-container" class="vida-container my-3">Click the button to start liveness detection.</div>
+      <div id="api-response" class="api-response my-3"></div>
+    </form>
   </div>
-  <div class="checkbox-group">
-    <input type="checkbox" id="skipSelfieReview">
-    <label for="skipSelfieReview">Skip Selfie Review Screen</label>
-  </div>
-</div>
 
-      <!-- Additional Fields -->
-      <label for="cameraFrameShape">Camera Frame Shape:</label>
-      <select id="cameraFrameShape">
-        <option value="oval">Oval</option>
-        <option value="circle">Circle</option>
-        <option value="square">Square</option>
-        <option value="rectangle">Rectangle</option>
-      </select>
-
-      <label for="maxRetryAttempts">Max Retry Attempts:</label>
-      <input type="number" id="maxRetryAttempts" placeholder="Enter Max Retry Attempts">
-
-      <label for="detectionTimeout">Detection Timeout (in seconds):</label>
-      <input type="number" id="detectionTimeout" placeholder="Enter Detection Timeout">
-    </div>
-
-    <!-- Button -->
-    <button id="startLiveness" class="button">Start Liveness</button>
-
-    <!-- Loader -->
-    <div id="loader" class="loader"></div>
-
-    <!-- Response Containers -->
-    <div id="vida-container" class="vida-container">Click the button to start liveness detection.</div>
-    <div id="api-response" class="api-response"></div>
-    <script src="https://web-sdk.vida.id/0.0.6/qa/vida-sdk-ui.js"></script>
-  </div>
-
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://web-sdk.vida.id/0.0.6/qa/vida-sdk-ui.js"></script>
   <script>
-
     document.getElementById('startLiveness').addEventListener('click', () => {
       const loader = document.getElementById('loader');
       loader.style.display = 'block';
@@ -79,10 +90,9 @@
       responseDiv.textContent = '';
 
       setTimeout(() => {
-        loader.style.display = 'none'; // Simulating SDK load time
+        loader.style.display = 'none';
       }, 2000);
 
-      // Get input values
       const partnerTransactionId = document.getElementById('partnerTransactionId').value;
       const locale = document.getElementById('languageToggle').value;
       const skipTutorialScreen = document.getElementById('skipTutorial').checked;
@@ -93,17 +103,14 @@
       const localeConfigs = document.getElementById('localeConfigs').value;
       const themeConfigs = document.getElementById('themeConfigs').value;
 
-      console.log('detectionTimeout', detectionTimeout);
-
       try {
-        // Parse JSON inputs
         const parsedLocaleConfigs = JSON.parse(localeConfigs || '{}');
         const parsedThemeConfigs = JSON.parse(themeConfigs || '{}');
 
         if (VidaSDK) {
           VidaSDK.init({
-            token: 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJjU2w2LS1GWjE3MGJkZE1nU3NlMEhiTG10cWREYVI5aWdsNldRdkdhZVVrIn0.eyJleHAiOjE3MzI4MDU2MjQsImlhdCI6MTczMjc4NzYyNCwiYXV0aF90aW1lIjoxNzMyNzg3NjIzLCJqdGkiOiI5NDk1NzU2Zi05ZmFiLTQzOGYtYWQ0Yy1kOWVkMjgyZTQwOGIiLCJpc3MiOiJodHRwczovL3FhLXNzby5ucC52aWRhLmlkL2F1dGgvcmVhbG1zL3ZpZGEiLCJhdWQiOlsidmlkYS1pZGktbWFpbi1zZXJ2aWNlIiwidmlkYS1pZHZlcmlmeS1zZXJ2aWNlIl0sInN1YiI6ImFlZmY0MTYxLWQwY2ItNDQ5YS05YjY2LTQxOGExMzRjZjgyMyIsInR5cCI6IkJlYXJlciIsImF6cCI6InZpZGEtZmVhdHVyZXMtZGVtby13ZWIiLCJub25jZSI6IjljMzBhODQyLTkzYjYtNGQ3NS04ZjY1LTNlMmVkYWRjNTY3NCIsInNlc3Npb25fc3RhdGUiOiIyYjc2ZjYxYS1kZDYwLTQ5NTUtOGE5Yy0xNGQ3MzZmOWYzZTAiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cHM6Ly9xYS1hcHAubnAudmlkYS5pZCJdLCJyZXNvdXJjZV9hY2Nlc3MiOnsidmlkYS1pZGktbWFpbi1zZXJ2aWNlIjp7InJvbGVzIjpbImNoZWNrX2ltYWdlX2hhY2tuZXNzIiwid2ViX3VzZXJfbGl2ZW5lc3MiLCJzZXJ2aWNlX3VzZXJfd2ViX2VreWMiXX0sInZpZGEtaWR2ZXJpZnktc2VydmljZSI6eyJyb2xlcyI6WyJkZW1vZy12MiIsIm9jci1rdHAiLCJrdHAtZmFjZS1tYXRjaCJdfX0sInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJzaWQiOiIyYjc2ZjYxYS1kZDYwLTQ5NTUtOGE5Yy0xNGQ3MzZmOWYzZTAiLCJjbGllbnRJZCI6InZpZGEtZmVhdHVyZXMtZGVtby13ZWIiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6InNhZ2FyIGNoaWxsYWwiLCJwcm9kSWQiOiI5YmU4N2U3OC04MzIwLTRhODQtYjIyMS0wMjE4OGY1ZTQxNDYiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJzYWdhci5jaGlsbGFsQHZpZGEuaWQiLCJnaXZlbl9uYW1lIjoic2FnYXIiLCJmYW1pbHlfbmFtZSI6ImNoaWxsYWwiLCJlbWFpbCI6InNhZ2FyLmNoaWxsYWxAdmlkYS5pZCJ9.HD5yY4zWeL2eiZcWY6IIjOsQrJ_qpRC1YfcM_-4sTj2BEBKwfEpwJL0ubZwAgXCHNx-x1HNQJtkDvPUqLjacMVN3Aert34-7wxwLXLv9OmoMGFZwJGwa1YqksUOfbpmN5bdOnV7oMeykGTOmS2vjXo9EUTOcq0eiHjxsINFV_3i1Mc0AJ8hrwBoekd7v40KTX0myI29Ge8qK4ilqZfGQm34XsEYcw50LEl4NhkSE_gfDugxvRSEjTXkW9DXBJZvSBMmAWI9zY-KPtzm-HiXkBmpHuUDe-yb9al296LtaOeb0ACNnAM_MdipqtFAIjh6tagTVXaBGVdAgAW81pjubsw',
-            signingKey: 'e67c72e265b6288d9652a14099b64dc0b2939cc3a47873656a729431946691a1', 
+            token: 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJjU2w2LS1GWjE3MGJkZE1nU3NlMEhiTG10cWREYVI5aWdsNldRdkdhZVVrIn0.eyJleHAiOjE3MzI4ODQyNTcsImlhdCI6MTczMjg2NjI1NywiYXV0aF90aW1lIjoxNzMyODY2MjU3LCJqdGkiOiI4ZDBjZWE2NS02MGY3LTQ0OTctYmZlNC05NWMxOWMyYzFjZmEiLCJpc3MiOiJodHRwczovL3FhLXNzby5ucC52aWRhLmlkL2F1dGgvcmVhbG1zL3ZpZGEiLCJhdWQiOlsidmlkYS1iaW9tZXRyaWNzLXNlcnZpY2UiLCJ2aWRhLWlkaS1tYWluLXNlcnZpY2UiLCJ2aWRhLWlkdmVyaWZ5LXNlcnZpY2UiXSwic3ViIjoiNmQzYmQyZTktNWE3MS00ZGYwLWFmZjUtYzRiMGZmODUxMWJiIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoidmlkYS1mZWF0dXJlcy1kZW1vLXdlYiIsIm5vbmNlIjoiNjU4OWJkMzAtOWY3Mi00ODFmLThiMWItZTkwZGI4MjgwNmI4Iiwic2Vzc2lvbl9zdGF0ZSI6ImY4MzJiZTFkLTc5ZDMtNDY0Yy04MDFjLTgzYTljYzUyNGU2NSIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwczovL3FhLWFwcC5ucC52aWRhLmlkIl0sInJlc291cmNlX2FjY2VzcyI6eyJ2aWRhLWJpb21ldHJpY3Mtc2VydmljZSI6eyJyb2xlcyI6WyJwZXJmb3JtX2ZhY2VfbWF0Y2giLCJ2ZXJpZnlfaGFja25lc3MiXX0sInZpZGEtaWRpLW1haW4tc2VydmljZSI6eyJyb2xlcyI6WyJjaGVja19pbWFnZV9oYWNrbmVzcyIsIndlYl91c2VyX2xpdmVuZXNzIiwic2VydmljZV91c2VyX3dlYl9la3ljIl19LCJ2aWRhLWlkdmVyaWZ5LXNlcnZpY2UiOnsicm9sZXMiOlsiaW5jb21lLXZlcmlmaWNhdGlvbiIsImRlbW9nLXYyIiwib2NyLWt0cCIsImt0cC1mYWNlLW1hdGNoIiwiZGVtb2ctdjItbGl0ZSJdfX0sInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJzaWQiOiJmODMyYmUxZC03OWQzLTQ2NGMtODAxYy04M2E5Y2M1MjRlNjUiLCJjbGllbnRJZCI6InZpZGEtZmVhdHVyZXMtZGVtby13ZWIiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJTYWdhciIsInByb2RJZCI6IjliZTg3ZTc4LTgzMjAtNGE4NC1iMjIxLTAyMTg4ZjVlNDE0NiIsInByZWZlcnJlZF91c2VybmFtZSI6IndlYnNka3VzZXJAdmlkYS5pZCIsImdpdmVuX25hbWUiOiJTYWdhciIsImVtYWlsIjoid2Vic2RrdXNlckB2aWRhLmlkIn0.TEbEeHYri5IAJL8x0Flu5jNksBAn9c5Hd7BYbo3E4z7CjXzk41_WBG631sxyJhum1L703_ir970rqXdZFyJA3pNAr00m2Zu9U6IG8tg3MirOxRSqlq4Xh_UPHKREeqUvWDo6WSqjHl8D2dS5wwArRPulO5nQRv9nyBRRkMkbgQQElRxKxL_HzEg5VCFZoprS83lcxzZI4-9ILDdbJ-4d2FI2jdtU1H5XuZ6sfCyJQ-e16uwRmgebu2Y0OuLFSEXlj3jcDhR8Vwq8g7k53a0XjvpcphK4EGmEqu8axxA9CQ0cisa5BiEX7Jb2XK68EK2sB1VKjmP2pCf6ezgAkavWkg',
+            signingKey: 'e67c72e265b6288d9652a14099b64dc0b2939cc3a47873656a729431946691a1',
             locale,
             partnerTransactionId,
             localeConfigs: parsedLocaleConfigs,
@@ -139,4 +146,5 @@
     });
   </script>
 </body>
+
 </html>
