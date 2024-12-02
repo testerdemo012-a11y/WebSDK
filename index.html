@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vida SDK Integration</title>
+</head>
+<body>
+  <h1>Start Liveness Detection</h1>
+  
+  <div id="vida-container"></div>
+  <script src="https://web-sdk.vida.id/0.0.6/qa/vida-sdk-ui.js"></script>
+  <div class="form-group">
+    <label for="languageToggle">Language:</label>
+    <select id="languageToggle">
+      <option value="EN">English</option>
+      <option value="ID">Bahasa</option>
+    </select>
+  </div>
+  <button id="startLiveness">Start Liveness</button>
+
+  <script type="module">
+    
+
+    document.getElementById('startLiveness').addEventListener('click', () => {
+      if (VidaSDK) {
+        const locale = document.getElementById('languageToggle').value;
+        
+        VidaSDK.init({
+          token: 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJjU2w2LS1GWjE3MGJkZE1nU3NlMEhiTG10cWREYVI5aWdsNldRdkdhZVVrIn0.eyJleHAiOjE3MzI4ODQyNTcsImlhdCI6MTczMjg2NjI1NywiYXV0aF90aW1lIjoxNzMyODY2MjU3LCJqdGkiOiI4ZDBjZWE2NS02MGY3LTQ0OTctYmZlNC05NWMxOWMyYzFjZmEiLCJpc3MiOiJodHRwczovL3FhLXNzby5ucC52aWRhLmlkL2F1dGgvcmVhbG1zL3ZpZGEiLCJhdWQiOlsidmlkYS1iaW9tZXRyaWNzLXNlcnZpY2UiLCJ2aWRhLWlkaS1tYWluLXNlcnZpY2UiLCJ2aWRhLWlkdmVyaWZ5LXNlcnZpY2UiXSwic3ViIjoiNmQzYmQyZTktNWE3MS00ZGYwLWFmZjUtYzRiMGZmODUxMWJiIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoidmlkYS1mZWF0dXJlcy1kZW1vLXdlYiIsIm5vbmNlIjoiNjU4OWJkMzAtOWY3Mi00ODFmLThiMWItZTkwZGI4MjgwNmI4Iiwic2Vzc2lvbl9zdGF0ZSI6ImY4MzJiZTFkLTc5ZDMtNDY0Yy04MDFjLTgzYTljYzUyNGU2NSIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwczovL3FhLWFwcC5ucC52aWRhLmlkIl0sInJlc291cmNlX2FjY2VzcyI6eyJ2aWRhLWJpb21ldHJpY3Mtc2VydmljZSI6eyJyb2xlcyI6WyJwZXJmb3JtX2ZhY2VfbWF0Y2giLCJ2ZXJpZnlfaGFja25lc3MiXX0sInZpZGEtaWRpLW1haW4tc2VydmljZSI6eyJyb2xlcyI6WyJjaGVja19pbWFnZV9oYWNrbmVzcyIsIndlYl91c2VyX2xpdmVuZXNzIiwic2VydmljZV91c2VyX3dlYl9la3ljIl19LCJ2aWRhLWlkdmVyaWZ5LXNlcnZpY2UiOnsicm9sZXMiOlsiaW5jb21lLXZlcmlmaWNhdGlvbiIsImRlbW9nLXYyIiwib2NyLWt0cCIsImt0cC1mYWNlLW1hdGNoIiwiZGVtb2ctdjItbGl0ZSJdfX0sInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJzaWQiOiJmODMyYmUxZC03OWQzLTQ2NGMtODAxYy04M2E5Y2M1MjRlNjUiLCJjbGllbnRJZCI6InZpZGEtZmVhdHVyZXMtZGVtby13ZWIiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJTYWdhciIsInByb2RJZCI6IjliZTg3ZTc4LTgzMjAtNGE4NC1iMjIxLTAyMTg4ZjVlNDE0NiIsInByZWZlcnJlZF91c2VybmFtZSI6IndlYnNka3VzZXJAdmlkYS5pZCIsImdpdmVuX25hbWUiOiJTYWdhciIsImVtYWlsIjoid2Vic2RrdXNlckB2aWRhLmlkIn0.TEbEeHYri5IAJL8x0Flu5jNksBAn9c5Hd7BYbo3E4z7CjXzk41_WBG631sxyJhum1L703_ir970rqXdZFyJA3pNAr00m2Zu9U6IG8tg3MirOxRSqlq4Xh_UPHKREeqUvWDo6WSqjHl8D2dS5wwArRPulO5nQRv9nyBRRkMkbgQQElRxKxL_HzEg5VCFZoprS83lcxzZI4-9ILDdbJ-4d2FI2jdtU1H5XuZ6sfCyJQ-e16uwRmgebu2Y0OuLFSEXlj3jcDhR8Vwq8g7k53a0XjvpcphK4EGmEqu8axxA9CQ0cisa5BiEX7Jb2XK68EK2sB1VKjmP2pCf6ezgAkavWkg',
+          locale,
+          signingKey: 'e67c72e265b6288d9652a14099b64dc0b2939cc3a47873656a729431946691a1',
+          workflowConfigs:{
+            liveness:{
+                skipTutorialScreen:false,
+                skipSelfieReviewScreen:false,
+                cameraFrameShape:'oval',
+                maxRetryAttempts:2,
+                detectionTimeOut:'30000',
+            }
+          },
+          themeConfigs: {
+  "primaryButtonBgColor": "#3498db",
+  "primaryButtonBorderColor": "#2980b9",
+  "primaryButtonHoverBgColor": "#2980b9",
+  "primaryButtonTextColor": "#ffffff",
+  "primaryButtonHoverTextColor": "#ecf0f1",
+  "primaryButtonBorderRadius": "5px",
+  "secondaryButtonBgColor": "#ecf0f1",
+  "secondaryButtonBorderColor": "#bdc3c7",
+  "secondaryButtonHoverBgColor": "#bdc3c7",
+  "secondaryButtonTextColor": "#2c3e50",
+  "secondaryButtonHoverTextColor": "#2c3e50",
+  "secondaryButtonBorderRadius": "5px",
+  "titleTextColor": "#2c3e50",
+  "titleTextFontSize": "24px",
+  "descriptionTextColor": "#7f8c8d",
+  "descriptionFontSize": "16px",
+  "bodyTextColor": "#2c3e50",
+  "bodyTextFontSize": "14px",
+  "fontFamily": "Lobster, cursive",
+  "fontFamilyUrl": "https://fonts.googleapis.com/css2?family=Lobster&display=swap",
+  "instructionIconColor": "#3498db",
+  "loadingSpinnerColor": "#3498db",
+  "cameraFrameBorderInitialColor": "#ff99ff",
+  "cameraFrameBorderAnimationColor": "#0000ff",
+  "cameraErrorAlertBgColor": "#e74c3c",
+  "cameraErrorAlertTextColor": "#ffffff",
+  "backButtonColor": "#660033",
+  "modalCloseButtonColor": "#c0392b",
+  "errorTextColor": "#e74c3c",
+  "errorTextFontSize": "12px",
+  "backgroundColor": "#e6e6ff",
+  "cameraFrameOverlayColor": "#6699ff"
+},
+          localeConfigs:{
+  "liveness": {
+      "EN": {
+          "transactionId": "RefId",
+          "tutorial": {
+              "title": "Liveness Instruction Read Carefully",
+              "description": "Clicking start will ask for camera permission to capture face image",
+              "instructions": {
+                  "faceCamera": "faceCamera",
+                  "faceClear": "faceClear",
+                  "singleFace": "singleFace",
+                  "avoidDark": "avoidDark"
+              },
+              "actionButton": "Start Liveness"
+          },
+          "camera": {
+              "permission": {
+                  "title": "Permission to Use Your Camera",
+                  "description": "To proceed, we need access to your camera for face assessment.",
+                  "actionButton": "Grant Access"
+              },
+              "error": {
+                  "title": "Camera Access Denied",
+                  "description": "We couldn’t detect your camera or it was denied. Please try granting permission again.",
+                  "actionButton": "Retry"
+              },
+              "noFaceDetected": "No face detected. Please come closer or clean your camera.",
+              "faceDetected": "Awesome! We've found you. Hold still for a few seconds.",
+              "placeFaceinFrame": "Please place your face within the frame().",
+              "multipleFaceDetected": "Multiple faces detected. Please ensure only one person is in view.",
+              "faceTooFar": "We can't see you clearly. Please come closer.",
+              "faceNotStraight": "Please straighten your face.",
+              "faceTooDark": "It seems dark here. Could you move to a better-lit area?",
+              "faceTooBright": "It's too bright! Could you reduce the light?",
+              "eyesClosed": "Your eyes are closed. Please open them."
+          },
+          "selfieReview": {
+              "title": "Review Your Photo",
+              "description": "Please make sure selfie is well and good to submit for verification!",
+              "primaryActionButton": "Submit Button edited",
+              "secondaryActionButton": "Custom Retry",
+              "backendError_1041": "1041 Below Threshold",
+              "backendError_1051": "Occluded",
+              "backendError_1052": "Too Smal Face",
+              "backendError_1053": "Low Quality Image",
+              "backendError_1054": "Dual Face Detected",
+              "backendError_1055": "No face",
+              "backendError_1058": "1058 not given",
+              "backendError_1059": "1059 not given",
+              "backendError_1060": "1060 not given",
+              "backendError_1062": "1062 not given",
+              "backendError_1063": "Contrast is high in captured image",
+              "backendError_1064": "1064 not given",
+              "backendError_1074": "UnderExposure_image",
+              "backendError_1065": "1065 not given",
+              "backendError_1075": "Over_exposure Image",
+              "backendError_1066": "1066 not given",
+              "backendError_1076": "Oh! Image is Blur"
+          }
+      },
+      "ID": {
+          "transactionId": "RefId",
+          "tutorial": {
+              "title": "Instruksi Liveness Bacalah dengan Sungguh-Sungguh",
+              "description": "Klik mulai akan meminta izin kamera untuk mengambil gambar wajah",
+              "instructions": {
+                  "faceCamera": "Arahkan Wajah ke Kamera",
+                  "faceClear": "Pastikan Wajah Jelas",
+                  "singleFace": "Hanya Satu Wajah",
+                  "avoidDark": "Hindari Area Gelap"
+              },
+              "actionButton": "Mulai Liveness"
+          },
+          "camera": {
+              "permission": {
+                  "title": "Izin Menggunakan Kamera Anda",
+                  "description": "Untuk melanjutkan, kami memerlukan akses ke kamera Anda untuk penilaian wajah.",
+                  "actionButton": "Berikan Akses"
+              },
+              "error": {
+                  "title": "Akses Kamera Ditolak",
+                  "description": "Kami tidak dapat mendeteksi kamera Anda atau akses ditolak. Silakan coba berikan izin lagi.",
+                  "actionButton": "Coba Lagi"
+              },
+              "noFaceDetected": "Tidak ada wajah terdeteksi. Silakan mendekat atau bersihkan kamera Anda.",
+              "faceDetected": "Luar biasa! Kami menemukan Anda. Tetap diam selama beberapa detik.",
+              "placeFaceinFrame": "Silakan tempatkan wajah Anda di dalam bingkai.",
+              "multipleFaceDetected": "Terdeteksi beberapa wajah. Pastikan hanya satu orang dalam tampilan.",
+              "faceTooFar": "Kami tidak dapat melihat Anda dengan jelas. Silakan mendekat.",
+              "faceNotStraight": "Silakan luruskan wajah Anda.",
+              "faceTooDark": "Terlihat gelap di sini. Bisakah Anda pindah ke area yang lebih terang?",
+              "faceTooBright": "Terlalu terang! Bisakah Anda mengurangi cahaya?",
+              "eyesClosed": "Mata Anda tertutup. Silakan buka."
+          },
+          "selfieReview": {
+              "title": "Tinjau Foto Anda",
+              "description": "Pastikan selfie Anda sudah baik dan siap untuk verifikasi!",
+              "primaryActionButton": "Kirimkan",
+              "secondaryActionButton": "Coba Lagi",
+              "backendError_1041": "1041 Bawah Ambang Batas",
+              "backendError_1051": "Wajah Tertutup",
+              "backendError_1052": "Wajah Terlalu Kecil",
+              "backendError_1053": "Kualitas Gambar Rendah",
+              "backendError_1054": "Terdeteksi Dua Wajah",
+              "backendError_1055": "Tidak Ada Wajah",
+              "backendError_1058": "1058 Tidak Tersedia",
+              "backendError_1059": "1059 Tidak Tersedia",
+              "backendError_1060": "1060 Tidak Tersedia",
+              "backendError_1062": "1062 Tidak Tersedia",
+              "backendError_1063": "Kontras Terlalu Tinggi di Gambar",
+              "backendError_1064": "1064 Tidak Tersedia",
+              "backendError_1074": "Gambar Terlalu Gelap",
+              "backendError_1065": "1065 Tidak Tersedia",
+              "backendError_1075": "Gambar Terlalu Terang",
+              "backendError_1066": "1066 Tidak Tersedia",
+              "backendError_1076": "Oh! Gambar Buram"
+          }
+      }
+  }
+}
+        });
+      } else {
+        console.error('VidaSDK is not available.');
+      }
+    });
+  </script>
+</body>
+</html>
