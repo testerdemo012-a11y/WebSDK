@@ -17,6 +17,16 @@
       <option value="ID">Bahasa</option>
     </select>
   </div>
+        <!-- Checkboxes -->
+        <div>
+              <input type="checkbox" id="skipTutorial">
+              <label for="skipTutorial">Skip Tutorial Screen</label>
+            </div>
+            <div>
+              <input type="checkbox" id="skipSelfieReview">
+              <label for="skipSelfieReview">Skip Selfie Review Screen</label>
+            </div>
+          </div>
   
   <button id="startLiveness">Start Liveness</button>
   <div id="api-response"></div>
@@ -30,15 +40,17 @@
         const responseDiv = document.getElementById('api-response');
         responseDiv.style.display = 'none';
         responseDiv.textContent = '';
+        const skipTutorialScreen = document.getElementById('skipTutorial').checked;
+        const skipSelfieReviewScreen = document.getElementById('skipSelfieReview').checked;
         
         VidaSDK.init({
-          token: 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJjU2w2LS1GWjE3MGJkZE1nU3NlMEhiTG10cWREYVI5aWdsNldRdkdhZVVrIn0.eyJleHAiOjE3MzMyMzM0MTUsImlhdCI6MTczMzIxNTQxNSwiYXV0aF90aW1lIjoxNzMzMjE1NDE0LCJqdGkiOiIxNzM3NWM2NC1iMTQzLTQyNDgtYWY5MC1lZTg2MDI1MWQ3YjUiLCJpc3MiOiJodHRwczovL3FhLXNzby5ucC52aWRhLmlkL2F1dGgvcmVhbG1zL3ZpZGEiLCJhdWQiOlsidmlkYS1iaW9tZXRyaWNzLXNlcnZpY2UiLCJ2aWRhLWlkaS1tYWluLXNlcnZpY2UiLCJ2aWRhLWlkdmVyaWZ5LXNlcnZpY2UiXSwic3ViIjoiNmQzYmQyZTktNWE3MS00ZGYwLWFmZjUtYzRiMGZmODUxMWJiIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoidmlkYS1mZWF0dXJlcy1kZW1vLXdlYiIsIm5vbmNlIjoiYWJhMmZkODAtZjIyMC00YzM2LTgzZDUtZDQzYTI4ZTYwNDY1Iiwic2Vzc2lvbl9zdGF0ZSI6IjYxZGE5ZTY1LWIzMDgtNDhiYS1iMzc4LTgxNmM3MzZhZDE1OCIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwczovL3FhLWFwcC5ucC52aWRhLmlkIl0sInJlc291cmNlX2FjY2VzcyI6eyJ2aWRhLWJpb21ldHJpY3Mtc2VydmljZSI6eyJyb2xlcyI6WyJwZXJmb3JtX2ZhY2VfbWF0Y2giLCJ2ZXJpZnlfaGFja25lc3MiXX0sInZpZGEtaWRpLW1haW4tc2VydmljZSI6eyJyb2xlcyI6WyJjaGVja19pbWFnZV9oYWNrbmVzcyIsIndlYl91c2VyX2xpdmVuZXNzIiwic2VydmljZV91c2VyX3dlYl9la3ljIl19LCJ2aWRhLWlkdmVyaWZ5LXNlcnZpY2UiOnsicm9sZXMiOlsiaW5jb21lLXZlcmlmaWNhdGlvbiIsImRlbW9nLXYyIiwib2NyLWt0cCIsImt0cC1mYWNlLW1hdGNoIiwiZGVtb2ctdjItbGl0ZSJdfX0sInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJzaWQiOiI2MWRhOWU2NS1iMzA4LTQ4YmEtYjM3OC04MTZjNzM2YWQxNTgiLCJjbGllbnRJZCI6InZpZGEtZmVhdHVyZXMtZGVtby13ZWIiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJTYWdhciIsInByb2RJZCI6IjliZTg3ZTc4LTgzMjAtNGE4NC1iMjIxLTAyMTg4ZjVlNDE0NiIsInByZWZlcnJlZF91c2VybmFtZSI6IndlYnNka3VzZXJAdmlkYS5pZCIsImdpdmVuX25hbWUiOiJTYWdhciIsImVtYWlsIjoid2Vic2RrdXNlckB2aWRhLmlkIn0.K37f3hQxrGtHviONvsX2K1gCaAoDjARuHOzCG3VmGUA4WAsCEDHNZBA5fc5D7p__21lGdJTcEut8a1fCRTFeyglwa1pCxWVDsu9VJnZHr-WHJLTk_ojDjOP-PGx15hMaXVsbvJXpLF5zhl2tSrhU8OGDNXfmKSUbuCIB1UaDi2ePnFzFfvPYVrTtEvUhdPNNAYAfijSOGQFFMlNVDFITZrQV8ctF8-MxsA9sR7GY9H0OVGIhLTFbPhGVgEVQDIuCaZ991Uu7qk0aYjVLStbOqELh8anirX60MMJYP3eNo2qz-WiIA83AsBL5NECjuaRJXw9zdPlKBdKoxENdAQVHPg',
+          token: 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJjU2w2LS1GWjE3MGJkZE1nU3NlMEhiTG10cWREYVI5aWdsNldRdkdhZVVrIn0.eyJleHAiOjE3MzMyNDkxNTksImlhdCI6MTczMzIzMTE1OSwiYXV0aF90aW1lIjoxNzMzMjMxMTU5LCJqdGkiOiI5Mzc2MTY5NC00ZjFhLTRiZGItOWI1ZS02YjE3ZTRmYzhhNzYiLCJpc3MiOiJodHRwczovL3FhLXNzby5ucC52aWRhLmlkL2F1dGgvcmVhbG1zL3ZpZGEiLCJhdWQiOlsidmlkYS1iaW9tZXRyaWNzLXNlcnZpY2UiLCJ2aWRhLWlkaS1tYWluLXNlcnZpY2UiLCJ2aWRhLWlkdmVyaWZ5LXNlcnZpY2UiXSwic3ViIjoiNmQzYmQyZTktNWE3MS00ZGYwLWFmZjUtYzRiMGZmODUxMWJiIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoidmlkYS1mZWF0dXJlcy1kZW1vLXdlYiIsIm5vbmNlIjoiOGJlM2YxODEtMjI2MS00MDY5LTg3YjMtOGUwZGUzMGJkMThkIiwic2Vzc2lvbl9zdGF0ZSI6ImIwM2VhNGQ5LWNjOGYtNDk1OC1iNzVmLTQzM2M5ZmUzMWU4MyIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwczovL3FhLWFwcC5ucC52aWRhLmlkIl0sInJlc291cmNlX2FjY2VzcyI6eyJ2aWRhLWJpb21ldHJpY3Mtc2VydmljZSI6eyJyb2xlcyI6WyJwZXJmb3JtX2ZhY2VfbWF0Y2giLCJ2ZXJpZnlfaGFja25lc3MiXX0sInZpZGEtaWRpLW1haW4tc2VydmljZSI6eyJyb2xlcyI6WyJjaGVja19pbWFnZV9oYWNrbmVzcyIsIndlYl91c2VyX2xpdmVuZXNzIiwic2VydmljZV91c2VyX3dlYl9la3ljIl19LCJ2aWRhLWlkdmVyaWZ5LXNlcnZpY2UiOnsicm9sZXMiOlsiaW5jb21lLXZlcmlmaWNhdGlvbiIsImRlbW9nLXYyIiwib2NyLWt0cCIsImt0cC1mYWNlLW1hdGNoIiwiZGVtb2ctdjItbGl0ZSJdfX0sInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJzaWQiOiJiMDNlYTRkOS1jYzhmLTQ5NTgtYjc1Zi00MzNjOWZlMzFlODMiLCJjbGllbnRJZCI6InZpZGEtZmVhdHVyZXMtZGVtby13ZWIiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJTYWdhciIsInByb2RJZCI6IjliZTg3ZTc4LTgzMjAtNGE4NC1iMjIxLTAyMTg4ZjVlNDE0NiIsInByZWZlcnJlZF91c2VybmFtZSI6IndlYnNka3VzZXJAdmlkYS5pZCIsImdpdmVuX25hbWUiOiJTYWdhciIsImVtYWlsIjoid2Vic2RrdXNlckB2aWRhLmlkIn0.WinhGL29W0aAziZJfGASXIwfL6W4NOaABTd5o9eIKKOZ2jr3eMF_2W687uz5uFp9MBSNzSzBtvJf3K5GQiERM_jOuBaYQ6IYCndIxSodu8adenxauxMWAe4tK__CEcz-uuP_JjyjqfOxfO-A84aVPuc4z3bj0GGnGCfHnVYSGyQAOHlcWFwUfIHkJr0mBV4HmxGPoaSzTjzTIeNeaADlRkXQQy5gY1SI5Ui92V4mFuGFDZBJ9NYKFpRtfn-enGESSazc5h5JKzB0SR4axV5-hn3AN8K2hogA0DhBPG7PKAWGxGazxitgDKIwVm0iIkah7iPX7BVl-n-vfjN5wEm3Bw',
           locale,
           signingKey: 'e67c72e265b6288d9652a14099b64dc0b2939cc3a47873656a729431946691a1',
           workflowConfigs:{
             liveness:{
-                skipTutorialScreen:false,
-                skipSelfieReviewScreen:false,
+                skipTutorialScreen:skipTutorialScreen,
+                skipSelfieReviewScreen:skipSelfieReviewScreen,
                 cameraFrameShape:'oval',
                 maxRetryAttempts:2,
                 detectionTimeOut:'30000',
@@ -139,61 +151,61 @@
           }
       },
       "ID": {
-          "transactionId": "RefId",
+          "transactionId": "Bahasa RefId",
           "tutorial": {
-              "title": "Instruksi Liveness Bacalah dengan Sungguh-Sungguh",
-              "description": "Klik mulai akan meminta izin kamera untuk mengambil gambar wajah",
+              "title": "Bahasa : Liveness Continued",
+              "description": "Bahasa : Liveness",
               "instructions": {
-                  "faceCamera": "Arahkan Wajah ke Kamera",
-                  "faceClear": "Pastikan Wajah Jelas",
-                  "singleFace": "Hanya Satu Wajah",
-                  "avoidDark": "Hindari Area Gelap"
+                  "faceCamera": "Bahasa: FaceCamera",
+                  "faceClear": "Bahasa: faceClear",
+                  "singleFace": "Bahasa: Single Face",
+                  "avoidDark": "Bahasa: Avoid Dark Room"
               },
-              "actionButton": "Mulai Liveness"
+              "actionButton": "Bahasa: Start button"
           },
           "camera": {
               "permission": {
-                  "title": "Izin Menggunakan Kamera Anda",
-                  "description": "Untuk melanjutkan, kami memerlukan akses ke kamera Anda untuk penilaian wajah.",
-                  "actionButton": "Berikan Akses"
+                  "title": "Bahasa: Title Camera Permission",
+                  "description": "Bahasa: Description Camera Permission",
+                  "actionButton": "Bahasa: Allow Button"
               },
               "error": {
-                  "title": "Akses Kamera Ditolak",
-                  "description": "Kami tidak dapat mendeteksi kamera Anda atau akses ditolak. Silakan coba berikan izin lagi.",
-                  "actionButton": "Coba Lagi"
+                  "title": "Bahasa: Camera is not allowed",
+                  "description": "Bahasa: Camera is not allowed or not accessible",
+                  "actionButton": "Bahasa: Retry button"
               },
-              "noFaceDetected": "Tidak ada wajah terdeteksi. Silakan mendekat atau bersihkan kamera Anda.",
-              "faceDetected": "Luar biasa! Kami menemukan Anda. Tetap diam selama beberapa detik.",
-              "placeFaceinFrame": "Silakan tempatkan wajah Anda di dalam bingkai.",
-              "multipleFaceDetected": "Terdeteksi beberapa wajah. Pastikan hanya satu orang dalam tampilan.",
-              "faceTooFar": "Kami tidak dapat melihat Anda dengan jelas. Silakan mendekat.",
-              "faceNotStraight": "Silakan luruskan wajah Anda.",
-              "faceTooDark": "Terlihat gelap di sini. Bisakah Anda pindah ke area yang lebih terang?",
-              "faceTooBright": "Terlalu terang! Bisakah Anda mengurangi cahaya?",
-              "eyesClosed": "Mata Anda tertutup. Silakan buka."
+              "noFaceDetected": "Bahasa: where is the face?",
+              "faceDetected": "Bahasa: Wohooo!! found you, wait few more second",
+              "placeFaceinFrame": "Bahasa: Come inside frame",
+              "multipleFaceDetected": "Bahasa: Why two face?",
+              "faceTooFar": "Bahasa: Face is out of world",
+              "faceNotStraight": "Bahasa: it should be straight bhai",
+              "faceTooDark": "Bahasa: it's night time?",
+              "faceTooBright": "Bahasa: Sunny Day Today!!!",
+              "eyesClosed": "Bahasa: why in sleeping mode?"
           },
           "selfieReview": {
-              "title": "Tinjau Foto Anda",
-              "description": "Pastikan selfie Anda sudah baik dan siap untuk verifikasi!",
-              "primaryActionButton": "Kirimkan",
-              "secondaryActionButton": "Coba Lagi",
-              "backendError_1041": "1041 Bawah Ambang Batas",
-              "backendError_1051": "Wajah Tertutup",
-              "backendError_1052": "Wajah Terlalu Kecil",
-              "backendError_1053": "Kualitas Gambar Rendah",
-              "backendError_1054": "Terdeteksi Dua Wajah",
-              "backendError_1055": "Tidak Ada Wajah",
-              "backendError_1058": "1058 Tidak Tersedia",
-              "backendError_1059": "1059 Tidak Tersedia",
-              "backendError_1060": "1060 Tidak Tersedia",
-              "backendError_1062": "1062 Tidak Tersedia",
-              "backendError_1063": "Kontras Terlalu Tinggi di Gambar",
-              "backendError_1064": "1064 Tidak Tersedia",
-              "backendError_1074": "Gambar Terlalu Gelap",
-              "backendError_1065": "1065 Tidak Tersedia",
-              "backendError_1075": "Gambar Terlalu Terang",
-              "backendError_1066": "1066 Tidak Tersedia",
-              "backendError_1076": "Oh! Gambar Buram"
+              "title": "Bahasa: Selfie Photo Review",
+              "description": "Bahasa: Please review photo before submit!",
+              "primaryActionButton": "Bahasa: Let's submit",
+              "secondaryActionButton": "Bahasa: Let's Retry",
+              "backendError_1041": "Bahasa-1041",
+              "backendError_1051": "Bahasa-1051",
+              "backendError_1052": "Bahasa-1052",
+              "backendError_1053": "Bahasa-1053",
+              "backendError_1054": "Bahasa-1054",
+              "backendError_1055": "Bahasa-1055",
+              "backendError_1058": "Bahasa-1058",
+              "backendError_1059": "Bahasa-1059",
+              "backendError_1060": "Bahasa-1060",
+              "backendError_1062": "Bahasa-1062",
+              "backendError_1063": "Bahasa-1063",
+              "backendError_1064": "Bahasa-1064",
+              "backendError_1074": "Bahasa-1074",
+              "backendError_1065": "Bahasa-1065",
+              "backendError_1075": "Bahasa-1075",
+              "backendError_1066": "Bahasa-1066",
+              "backendError_1076": "Bahasa-1076"
           }
       }
   }
