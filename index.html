@@ -17,7 +17,9 @@
       <option value="ID">Bahasa</option>
     </select>
   </div>
+  
   <button id="startLiveness">Start Liveness</button>
+  <div id="api-response"></div>
 
   <script type="module">
     
@@ -25,9 +27,12 @@
     document.getElementById('startLiveness').addEventListener('click', () => {
       if (VidaSDK) {
         const locale = document.getElementById('languageToggle').value;
+        const responseDiv = document.getElementById('api-response');
+        responseDiv.style.display = 'none';
+        responseDiv.textContent = '';
         
         VidaSDK.init({
-          token: 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJjU2w2LS1GWjE3MGJkZE1nU3NlMEhiTG10cWREYVI5aWdsNldRdkdhZVVrIn0.eyJleHAiOjE3MzMyMjExNzgsImlhdCI6MTczMzIwMzE3OCwiYXV0aF90aW1lIjoxNzMzMjAzMTc4LCJqdGkiOiI5YzNhY2YxNS0zY2UzLTRiMjQtOWIwZS0wYzE4NjMxYjRmMjAiLCJpc3MiOiJodHRwczovL3FhLXNzby5ucC52aWRhLmlkL2F1dGgvcmVhbG1zL3ZpZGEiLCJhdWQiOlsidmlkYS1iaW9tZXRyaWNzLXNlcnZpY2UiLCJ2aWRhLWlkaS1tYWluLXNlcnZpY2UiLCJ2aWRhLWlkdmVyaWZ5LXNlcnZpY2UiXSwic3ViIjoiNmQzYmQyZTktNWE3MS00ZGYwLWFmZjUtYzRiMGZmODUxMWJiIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoidmlkYS1mZWF0dXJlcy1kZW1vLXdlYiIsIm5vbmNlIjoiYjM3NDQyY2UtNTg4YS00ZTE2LTllNDctYzQwNjVlZjAwNWI2Iiwic2Vzc2lvbl9zdGF0ZSI6IjdjZWE1YWUyLWY5YWUtNDRiZC04MjllLWE3ODE5MzdkYmNlNCIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwczovL3FhLWFwcC5ucC52aWRhLmlkIl0sInJlc291cmNlX2FjY2VzcyI6eyJ2aWRhLWJpb21ldHJpY3Mtc2VydmljZSI6eyJyb2xlcyI6WyJwZXJmb3JtX2ZhY2VfbWF0Y2giLCJ2ZXJpZnlfaGFja25lc3MiXX0sInZpZGEtaWRpLW1haW4tc2VydmljZSI6eyJyb2xlcyI6WyJjaGVja19pbWFnZV9oYWNrbmVzcyIsIndlYl91c2VyX2xpdmVuZXNzIiwic2VydmljZV91c2VyX3dlYl9la3ljIl19LCJ2aWRhLWlkdmVyaWZ5LXNlcnZpY2UiOnsicm9sZXMiOlsiaW5jb21lLXZlcmlmaWNhdGlvbiIsImRlbW9nLXYyIiwib2NyLWt0cCIsImt0cC1mYWNlLW1hdGNoIiwiZGVtb2ctdjItbGl0ZSJdfX0sInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJzaWQiOiI3Y2VhNWFlMi1mOWFlLTQ0YmQtODI5ZS1hNzgxOTM3ZGJjZTQiLCJjbGllbnRJZCI6InZpZGEtZmVhdHVyZXMtZGVtby13ZWIiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJTYWdhciIsInByb2RJZCI6IjliZTg3ZTc4LTgzMjAtNGE4NC1iMjIxLTAyMTg4ZjVlNDE0NiIsInByZWZlcnJlZF91c2VybmFtZSI6IndlYnNka3VzZXJAdmlkYS5pZCIsImdpdmVuX25hbWUiOiJTYWdhciIsImVtYWlsIjoid2Vic2RrdXNlckB2aWRhLmlkIn0.Rvl4FiNL6dj-J70ykRAZAEGdLLwX8Vq6_7dOixV9Rg3_FV3jEpF77M6h5y-9S9qMoPqRQw5MuZ83BSp_-nb73O8XAHYJyUVKEnHFpnjPW5yrh6EA5KV6sAcacjx3qIo3br6xI4MSiWN7Jm3lgkjS6iJzntkBRBJPXq7a7qDA2aLg0InjLHKqQsXOaqXoI-EQzRzgSey2ExEfXLr4s9LIfuvw1T35Ck0FugO_VctqbzbEvoQFnE6yARJDHNIK3e7Es3SXY7oK0SuGYR9FeORQoCqF455VG0CfK0lxwFhyDwTaq3OEvUDmLnGQIAGPiVB5qlsU9Iy31Tx5rhrTX6-UqQ',
+          token: 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJjU2w2LS1GWjE3MGJkZE1nU3NlMEhiTG10cWREYVI5aWdsNldRdkdhZVVrIn0.eyJleHAiOjE3MzMyMzM0MTUsImlhdCI6MTczMzIxNTQxNSwiYXV0aF90aW1lIjoxNzMzMjE1NDE0LCJqdGkiOiIxNzM3NWM2NC1iMTQzLTQyNDgtYWY5MC1lZTg2MDI1MWQ3YjUiLCJpc3MiOiJodHRwczovL3FhLXNzby5ucC52aWRhLmlkL2F1dGgvcmVhbG1zL3ZpZGEiLCJhdWQiOlsidmlkYS1iaW9tZXRyaWNzLXNlcnZpY2UiLCJ2aWRhLWlkaS1tYWluLXNlcnZpY2UiLCJ2aWRhLWlkdmVyaWZ5LXNlcnZpY2UiXSwic3ViIjoiNmQzYmQyZTktNWE3MS00ZGYwLWFmZjUtYzRiMGZmODUxMWJiIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoidmlkYS1mZWF0dXJlcy1kZW1vLXdlYiIsIm5vbmNlIjoiYWJhMmZkODAtZjIyMC00YzM2LTgzZDUtZDQzYTI4ZTYwNDY1Iiwic2Vzc2lvbl9zdGF0ZSI6IjYxZGE5ZTY1LWIzMDgtNDhiYS1iMzc4LTgxNmM3MzZhZDE1OCIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwczovL3FhLWFwcC5ucC52aWRhLmlkIl0sInJlc291cmNlX2FjY2VzcyI6eyJ2aWRhLWJpb21ldHJpY3Mtc2VydmljZSI6eyJyb2xlcyI6WyJwZXJmb3JtX2ZhY2VfbWF0Y2giLCJ2ZXJpZnlfaGFja25lc3MiXX0sInZpZGEtaWRpLW1haW4tc2VydmljZSI6eyJyb2xlcyI6WyJjaGVja19pbWFnZV9oYWNrbmVzcyIsIndlYl91c2VyX2xpdmVuZXNzIiwic2VydmljZV91c2VyX3dlYl9la3ljIl19LCJ2aWRhLWlkdmVyaWZ5LXNlcnZpY2UiOnsicm9sZXMiOlsiaW5jb21lLXZlcmlmaWNhdGlvbiIsImRlbW9nLXYyIiwib2NyLWt0cCIsImt0cC1mYWNlLW1hdGNoIiwiZGVtb2ctdjItbGl0ZSJdfX0sInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJzaWQiOiI2MWRhOWU2NS1iMzA4LTQ4YmEtYjM3OC04MTZjNzM2YWQxNTgiLCJjbGllbnRJZCI6InZpZGEtZmVhdHVyZXMtZGVtby13ZWIiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJTYWdhciIsInByb2RJZCI6IjliZTg3ZTc4LTgzMjAtNGE4NC1iMjIxLTAyMTg4ZjVlNDE0NiIsInByZWZlcnJlZF91c2VybmFtZSI6IndlYnNka3VzZXJAdmlkYS5pZCIsImdpdmVuX25hbWUiOiJTYWdhciIsImVtYWlsIjoid2Vic2RrdXNlckB2aWRhLmlkIn0.K37f3hQxrGtHviONvsX2K1gCaAoDjARuHOzCG3VmGUA4WAsCEDHNZBA5fc5D7p__21lGdJTcEut8a1fCRTFeyglwa1pCxWVDsu9VJnZHr-WHJLTk_ojDjOP-PGx15hMaXVsbvJXpLF5zhl2tSrhU8OGDNXfmKSUbuCIB1UaDi2ePnFzFfvPYVrTtEvUhdPNNAYAfijSOGQFFMlNVDFITZrQV8ctF8-MxsA9sR7GY9H0OVGIhLTFbPhGVgEVQDIuCaZ991Uu7qk0aYjVLStbOqELh8anirX60MMJYP3eNo2qz-WiIA83AsBL5NECjuaRJXw9zdPlKBdKoxENdAQVHPg',
           locale,
           signingKey: 'e67c72e265b6288d9652a14099b64dc0b2939cc3a47873656a729431946691a1',
           workflowConfigs:{
@@ -102,7 +107,7 @@
               "noFaceDetected": "No face detected. Please come closer or clean your camera.",
               "faceDetected": "Awesome! We've found you. Hold still for a few seconds.",
               "placeFaceinFrame": "Please place your face within the frame().",
-              "multipleFaceDetected": "Multiple faces detected. Please ensure only one person is in view.",
+              "multipleFaceDetected": "Multiple faces",
               "faceTooFar": "We can't see you clearly. Please come closer.",
               "faceNotStraight": "Please straighten your face.",
               "faceTooDark": "It seems dark here. Could you move to a better-lit area?",
@@ -192,7 +197,17 @@
           }
       }
   }
-}
+},
+            onComplete: (apiResponse) => {
+              console.log('API Response:', apiResponse);
+              responseDiv.style.display = 'block';
+              responseDiv.textContent = `API Response: ${JSON.stringify(apiResponse, null, 2)}`;
+            },
+            onError: (apiResponse) => {
+              console.error('API Response:', apiResponse);
+              responseDiv.style.display = 'block';
+              responseDiv.textContent = `Error Response: ${JSON.stringify(apiResponse, null, 2)}`;
+            },
         });
       } else {
         console.error('VidaSDK is not available.');
