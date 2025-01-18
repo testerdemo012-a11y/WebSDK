@@ -26,6 +26,11 @@
         <label for="signingKey">Enter Signing Key:</label>
         <input type="password" class="form-control" id="signingKey" value="e67c72e265b6288d9652a14099b64dc0b2939cc3a47873656a729431946691a1">
       </div>
+      <!-- Field to pass the JavaScript script src -->
+      <div class="form-group">
+        <label for="scriptSrc">Enter JavaScript Script URL:</label>
+        <input type="url" class="form-control" id="scriptSrc" value="https://web-sdk.vida.id/1.0.1/vida-web-sdk.js">
+      </div>
 
       <div class="form-group">
         <label for="localeConfigs">Locale Configs (JSON):</label>
@@ -233,13 +238,39 @@
 
       <div id="vida-container" class="vida-container my-3">Click the button to start liveness detection.</div>
       <div id="api-response" class="api-response my-3"></div>
+      <!-- Button to load the script -->
+      <button type="button" class="btn btn-primary" id="loadScriptBtn">Load Script</button>
     </form>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="https://web-sdk.vida.id/1.0.1/vida-web-sdk.js"></script>
+  <script>
+    // Function to dynamically load the script
+    document.getElementById('loadScriptBtn').addEventListener('click', function () {
+      const scriptSrc = document.getElementById('scriptSrc').value;
+
+      if (scriptSrc) {
+        const existingScript = document.querySelector(`script[src="${scriptSrc}"]`);
+        if (!existingScript) {
+          const script = document.createElement('script');
+          script.src = scriptSrc;
+          script.onload = () => {
+            alert('Script loaded successfully!');
+          };
+          script.onerror = () => {
+            alert('Failed to load the script. Please check the URL.');
+          };
+          document.body.appendChild(script);
+        } else {
+          alert('Script is already loaded.');
+        }
+      } else {
+        alert('Please enter a valid script URL.');
+      }
+    });
+  </script>
   <script>
     document.getElementById('startLiveness').addEventListener('click', () => {
       const loader = document.getElementById('loader');
