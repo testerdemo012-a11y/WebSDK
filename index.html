@@ -1,13 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Token Fetcher</title>
-  <script src="getToken.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web SDK Testing</title>
 </head>
 <body>
-  <h1>Cloudflare Worker Token Fetcher</h1>
-  <div id="token-display">Fetching token...</div>
+    <h1>Select Environment</h1>
+    <form id="envForm">
+        <label>
+            <input type="radio" name="env" value="qa" required> QA
+        </label>
+        <label>
+            <input type="radio" name="env" value="sandbox" required> Sandbox
+        </label>
+        <button type="button" onclick="executeScript()">Submit</button>
+    </form>
+
+    <input type="hidden" id="encrypted-data">
+    <input type="hidden" id="token">
+    <input type="hidden" id="iv">
+
+    <script src="decryption.js"></script>
+    <script>
+        function executeScript() {
+            const env = document.querySelector('input[name="env"]:checked').value;
+
+            if (env === 'qa') {
+                loadScript('getToken.js', fetchToken);
+            } else if (env === 'sandbox') {
+                loadScript('getSandbox.js', fetchToken); // Assuming getSandbox.js has a fetchToken function
+            }
+        }
+
+        function loadScript(src, callback) {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = callback;
+            document.body.appendChild(script);
+        }
+        function fetchAndDecrypt() {
+            fetchToken().then(() => {
+            fetchAndDecryptToken().then(decryptedToken => {
+            sessionStorage.setItem('decryptedToken', document.getElementById("token").value); // Store the token in sessionStorage
+            window.location.href = 'websdk.html';
+                });
+            });
+    }
+
+
+        async function fetchToken() {
+            if (window.fetchToken) {
+                await window.fetchToken();
+                fetchAndDecrypt();
+            }
+        }
+    </script>
 </body>
 </html>
