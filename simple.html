@@ -49,6 +49,7 @@
 </div>
 <br>
   <div><textarea id="api-response" rows="6" cols="50" hidden> </textarea></div>
+  <div><textarea id="api-error-response" rows="6" cols="50" hidden> </textarea></div>
 
   <script>
     // Function to dynamically load the script
@@ -85,6 +86,7 @@
       if (VidaSDK) {
         const locale = document.getElementById('language').value;
         const responseDiv = document.getElementById('api-response');
+        const errorResponseDiv = document.getElementById('api-error-response');
         const skipTutorialScreen = document.getElementById('skipTutorial').checked;
         const skipSelfieReviewScreen = document.getElementById('skipSelfieReview').checked;
         const token = document.getElementById('token').value;
@@ -105,12 +107,14 @@
             onComplete: (apiResponse) => {
               console.log('API Response:', apiResponse);
               responseDiv.style.display = 'block';
-              responseDiv.value=`API Response: ${JSON.stringify(apiResponse, null, 2)}`;
+              responseDiv.textContent=`API Response: ${JSON.stringify(apiResponse, null, 2)}`;
             },
             onError: (apiResponse) => {
               console.error('API Response:', apiResponse);
-              responseDiv.style.display = 'block';
-              responseDiv.textContent = `Error Response: ${JSON.stringify(apiResponse, null, 2)}`;
+              const currentResponse = errorResponseDiv.value || '';
+              errorResponseDiv.style.display = 'block';
+              const newresponse = `Error Response: ${JSON.stringify(apiResponse, null, 2)}`;
+              errorResponseDiv.value=currentResponse+newresponse+ '\n\n';
             },
         });
       } else {
