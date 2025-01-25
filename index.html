@@ -58,165 +58,13 @@
       </div>
 
       <div class="form-group">
-        <label for="localeConfigs">Locale Configs (JSON):</label>
-        <textarea class="form-control" id="localeConfigs" rows="3">{
-            "liveness": {
-                "EN": {
-                    "sessionId": "RefId",
-                    "tutorial": {
-                        "title": "Liveness Instruction Read Carefully",
-                        "description": "Clicking start will ask for camera permission to capture face image",
-                        "instructions": {
-                            "faceCamera": "faceCamera",
-                            "faceClear": "faceClear",
-                            "singleFace": "singleFace",
-                            "avoidDark": "avoidDark"
-                        },
-                        "actionButton": "Start Liveness"
-                    },
-                    "camera": {
-                        "permission": {
-                            "title": "Permission to Use Your Camera",
-                            "description": "To proceed, we need access to your camera for face assessment.",
-                            "actionButton": "Grant Access"
-                        },
-                        "error": {
-                            "title": "Camera Access Denied",
-                            "description": "We couldn’t detect your camera or it was denied. Please try granting permission again.",
-                            "actionButton": "Retry"
-                        },
-                        "noFaceDetected": "No face detected. Please come closer or clean your camera.",
-                        "faceDetected": "Awesome! We've found you. Hold still for a few seconds.",
-                        "placeFaceinFrame": "Please place your face within the frame().",
-                        "multipleFaceDetected": "Multiple faces",
-                        "faceTooFar": "We can't see you clearly. Please come closer.",
-                        "faceNotStraight": "Please straighten your face.",
-                        "faceTooDark": "It seems dark here. Could you move to a better-lit area?",
-                        "faceTooBright": "It's too bright! Could you reduce the light?",
-                        "eyesClosed": "Your eyes are closed. Please open them."
-                    },
-                    "selfieReview": {
-                        "title": "Review Your Photo",
-                        "description": "Please make sure selfie is well and good to submit for verification!",
-                        "primaryActionButton": "Submit Button edited",
-                        "secondaryActionButton": "Custom Retry",
-                        "backendError_1041": "1041 Below Threshold",
-                        "backendError_1051": "Occluded",
-                        "backendError_1052": "Too Smal Face",
-                        "backendError_1053": "Low Quality Image",
-                        "backendError_1054": "Dual Face Detected",
-                        "backendError_1055": "No face",
-                        "backendError_1058": "1058 not given",
-                        "backendError_1059": "1059 not given",
-                        "backendError_1060": "1060 not given",
-                        "backendError_1062": "1062 not given",
-                        "backendError_1063": "Contrast is high in captured image",
-                        "backendError_1064": "1064 not given",
-                        "backendError_1074": "UnderExposure_image",
-                        "backendError_1065": "1065 not given",
-                        "backendError_1075": "Over_exposure Image",
-                        "backendError_1066": "1066 not given",
-                        "backendError_1076": "Oh! Image is Blur"
-                    }
-                },
-                "ID": {
-                    "sessionId": "Bahasa RefId",
-                    "tutorial": {
-                        "title": "Bahasa : Liveness Continued",
-                        "description": "Bahasa : Liveness",
-                        "instructions": {
-                            "faceCamera": "Bahasa: FaceCamera",
-                            "faceClear": "Bahasa: faceClear",
-                            "singleFace": "Bahasa: Single Face",
-                            "avoidDark": "Bahasa: Avoid Dark Room"
-                        },
-                        "actionButton": "Bahasa: Start button"
-                    },
-                    "camera": {
-                        "permission": {
-                            "title": "Bahasa: Title Camera Permission",
-                            "description": "Bahasa: Description Camera Permission",
-                            "actionButton": "Bahasa: Allow Button"
-                        },
-                        "error": {
-                            "title": "Bahasa: Camera is not allowed",
-                            "description": "Bahasa: Camera is not allowed or not accessible",
-                            "actionButton": "Bahasa: Retry button"
-                        },
-                        "noFaceDetected": "Bahasa: where is the face?",
-                        "faceDetected": "Bahasa: Wohooo!! found you, wait few more second",
-                        "placeFaceinFrame": "Bahasa: Come inside frame",
-                        "multipleFaceDetected": "Bahasa: Why two face?",
-                        "faceTooFar": "Bahasa: Face is out of world",
-                        "faceNotStraight": "Bahasa: it should be straight bhai",
-                        "faceTooDark": "Bahasa: it's night time?",
-                        "faceTooBright": "Bahasa: Sunny Day Today!!!",
-                        "eyesClosed": "Bahasa: why in sleeping mode?"
-                    },
-                    "selfieReview": {
-                        "title": "Bahasa: Selfie Photo Review",
-                        "description": "Bahasa: Please review photo before submit!",
-                        "primaryActionButton": "Bahasa: Let's submit",
-                        "secondaryActionButton": "Bahasa: Let's Retry",
-                        "backendError_1041": "Bahasa-1041",
-                        "backendError_1051": "Bahasa-1051",
-                        "backendError_1052": "Bahasa-1052",
-                        "backendError_1053": "Bahasa-1053",
-                        "backendError_1054": "Bahasa-1054",
-                        "backendError_1055": "Bahasa-1055",
-                        "backendError_1058": "Bahasa-1058",
-                        "backendError_1059": "Bahasa-1059",
-                        "backendError_1060": "Bahasa-1060",
-                        "backendError_1062": "Bahasa-1062",
-                        "backendError_1063": "Bahasa-1063",
-                        "backendError_1064": "Bahasa-1064",
-                        "backendError_1074": "Bahasa-1074",
-                        "backendError_1065": "Bahasa-1065",
-                        "backendError_1075": "Bahasa-1075",
-                        "backendError_1066": "Bahasa-1066",
-                        "backendError_1076": "Bahasa-1076"
-                    }
-                }
-            }
-          }</textarea>
+        <label for="localeConfig">Locale Configs (JSON):</label>
+        <textarea class="form-control" id="localeConfig" rows="3"></textarea>
       </div>
 
       <div class="form-group">
-        <label for="themeConfigs">Theme Configs (JSON):</label>
-        <textarea class="form-control" id="themeConfigs" rows="3">{
-            "primaryButtonBgColor": "#3498db",
-            "primaryButtonBorderColor": "#2980b9",
-            "primaryButtonHoverBgColor": "#2980b9",
-            "primaryButtonTextColor": "#ffffff",
-            "primaryButtonHoverTextColor": "#ecf0f1",
-            "primaryButtonBorderRadius": "5px",
-            "secondaryButtonBgColor": "#ecf0f1",
-            "secondaryButtonBorderColor": "#bdc3c7",
-            "secondaryButtonHoverBgColor": "#bdc3c7",
-            "secondaryButtonTextColor": "#2c3e50",
-            "secondaryButtonHoverTextColor": "#2c3e50",
-            "secondaryButtonBorderRadius": "5px",
-            "titleTextColor": "#2c3e50",
-            "titleTextFontSize": "24px",
-            "descriptionTextColor": "#7f8c8d",
-            "descriptionFontSize": "16px",
-            "bodyTextColor": "#2c3e50",
-            "bodyTextFontSize": "14px",
-            "fontFamily": "Lobster, cursive",
-            "fontFamilyUrl": "https://fonts.googleapis.com/css2?family=Lobster&display=swap",
-            "instructionIconColor": "#3498db",
-            "loadingSpinnerColor": "#3498db",
-            "cameraFrameBorderInitialColor": "#90ff33 ",
-            "cameraFrameBorderAnimationColor": "#0000ff",
-            "cameraErrorAlertBgColor": "#e74c3c",
-            "cameraErrorAlertTextColor": "#ffffff",
-            "backButtonColor": "#660033",
-            "modalCloseButtonColor": "#c0392b",
-            "errorTextColor": "#e74c3c",
-            "errorTextFontSize": "12px",
-            "backgroundColor": "#e6e6ff",
-            "cameraFrameOverlayColor": "#6699ff"
-          }</textarea>
+        <label for="themeConfig">Theme Configs (JSON):</label>
+        <textarea class="form-control" id="themeConfig" rows="3"></textarea>
       </div>
 
       <div class="form-group">
@@ -323,13 +171,13 @@
       const cameraFrameShape = document.getElementById('cameraFrameShape').value;
       const maxRetryAttempts = parseInt(document.getElementById('maxRetryAttempts').value);
       const detectionTimeout = parseInt(document.getElementById('detectionTimeout').value);
-      const localeConfigs = document.getElementById('localeConfigs').value;
-      const themeConfigs = document.getElementById('themeConfigs').value;
+      const localeConfigs = document.getElementById('localeConfig').value;
+      const themeConfigs = document.getElementById('themeConfig').value;
       console.log("value->" + token);
 
       try {
-        const parsedLocaleConfigs = JSON.parse(localeConfigs || '{}');
-        const parsedThemeConfigs = JSON.parse(themeConfigs || '{}');
+        const parsedLocaleConfigs = JSON.parse(localeConfig || '{}');
+        const parsedThemeConfigs = JSON.parse(themeConfig || '{}');
 
         const config = { token, // Use the hidden token value 
             signingKey, 
