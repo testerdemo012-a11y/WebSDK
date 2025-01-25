@@ -1,224 +1,207 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Enhanced Liveness Detection</title>
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <style>
-    .inline-radio {
-      display: inline-block;
-      margin-right: 15px;
-    }
-  </style>
+    <title>Liveness Detection</title>
+    <link rel="stylesheet" href="style1.css">
 </head>
-
 <body>
-  <div class="container my-4">
-    <h1 class="text-center mb-4">Liveness Detection</h1>
 
-    <form id="livenessForm">
-      <div class="form-group">
-        <h3>Select Environment:</h3>
-        <div class="form-check inline-radio">
-          <input type="radio" class="form-check-input" name="env" id="qa" value="qa" >
-          <label class="form-check-label" for="qa">QA</label>
-        </div>
-        <div class="form-check inline-radio">
-          <input type="radio" class="form-check-input" name="env" id="sandbox" value="sandbox" >
-          <label class="form-check-label" for="sandbox">Sandbox</label>
-        </div>
-        <div class="form-check inline-radio">
-          <input type="radio" class="form-check-input" name="env" id="prod" value="prod" >
-          <label class="form-check-label" for="prod">Prod</label>
-        </div>
-      </div>
+    <h1>Liveness Detection [Web SDK]</h1>
 
-      <div class="form-group">
-        <label for="partnerTransactionId">Partner Transaction ID:</label>
-        <input type="text" class="form-control" id="partnerTransactionId" placeholder="Enter Partner Transaction ID">
-      </div>
-      <div class="form-group">
-        <label for="token">Enter Token:</label>
-        <input type="password" class="form-control" id="token" value="">
-      </div>
-      <input type="hidden" id="encrypted-data" class="hidden-input">
-      
+    <div class="container">
+        <input type="hidden" id="encrypted-data" class="hidden-input">
         <input type="hidden" id="iv" class="hidden-input">
-      <div class="form-group">
-        <label for="signingKey">Enter Signing Key:</label>
-        <input type="password" class="form-control" id="signingKey" value="">
-      </div>
-      <!-- Field to pass the JavaScript script src -->
-      <div class="form-group">
-        <label for="scriptSrc">Enter JavaScript Script URL:</label>
-        <input type="url" class="form-control" id="scriptSrc" value="">
-      </div>
 
-      <div class="form-group">
-        <label for="localeConfig">Locale Configs (JSON):</label>
-        <textarea class="form-control" id="localeConfig" rows="3"></textarea>
-      </div>
+        <div class="section">
+            <h2>Select Environment</h2>
+            <label><input type="radio" name="env" value="qa"> QA</label>
+            <label><input type="radio" name="env" value="sandbox"> SANDBOX</label>
+            <label><input type="radio" name="env" value="prod"> PROD</label><br>
+            <h2>partnerTransactionId</h2>
+            <input type="text" id="partnerTransactionId" placeholder="Enter Partner Transaction ID">
+        </div>
 
-      <div class="form-group">
-        <label for="themeConfig">Theme Configs (JSON):</label>
-        <textarea class="form-control" id="themeConfig" rows="3"></textarea>
-      </div>
+        <div class="section">
+            <h2>Token</h2>
+            <input type="password" id="token" placeholder="Enter Token">
+            <h2>SigningKey</h2>
+            <input type="password" id="signingKey" placeholder="Enter SigningKey">
+        </div>
 
-      <div class="form-group">
-        <label for="languageToggle">Language:</label>
-        <select class="form-control" id="languageToggle">
-          <option value="EN">English</option>
-          <option value="ID">Bahasa</option>
-        </select>
-      </div>
+        <div class="section">
+            <h2>Enter SDK Script Link</h2>
+            <input type="text" id="scriptSrc" placeholder="Enter SDK Script Link">
+            <button id="loadScriptButton">Load Script</button>
+        </div>
 
-      <div class="form-check">
-        <input type="checkbox" class="form-check-input" id="skipTutorial">
-        <label class="form-check-label" for="skipTutorial">Skip Tutorial Screen</label>
-      </div>
+        <div class="section">
+            <h2>Locale Config (JSON)</h2>
+            <textarea id="localeConfig" placeholder="Enter Locale Config" rows="6"></textarea>
+        </div>
 
-      <div class="form-check">
-        <input type="checkbox" class="form-check-input" id="skipSelfieReview">
-        <label class="form-check-label" for="skipSelfieReview">Skip Selfie Review Screen</label>
-      </div>
+        <div class="section">
+            <h2>Theme Config (JSON)</h2>
+            <textarea id="themeConfig" placeholder="Enter Theme Config" rows="10"></textarea>
+        </div>
 
-      <div class="form-group">
-        <label for="cameraFrameShape">Camera Frame Shape:</label>
-        <select class="form-control" id="cameraFrameShape">
-          <option value="oval">Oval</option>
-          <option value="circle">Circle</option>
-          <option value="square">Square</option>
-          <option value="rectangle">Rectangle</option>
-        </select>
-      </div>
+        <div class="section">
+            <h2>Max Retry Attempts</h2>
+            <input type="number" id="maxRetryAttempts" placeholder="Enter Max Retry Attempts" value="1">
+            <h2>Detection Timeout (in milSec)</h2>
+            <input type="number" id="detectionTimeout" placeholder="Enter Detection Timeout" value="30000">
+        </div>
 
-      <div class="form-group">
-        <label for="maxRetryAttempts">Max Retry Attempts:</label>
-        <input type="number" class="form-control" id="maxRetryAttempts" value="1">
-      </div>
+        <div class="section">
+            <h2>Choose Language</h2>
+            <select id="language">
+                <option value="EN">English</option>
+            </select>
+            <h2>Frame Shape</h2>
+            <select id="cameraFrameShape">
+                <option value="oval">Oval</option>
+            </select>
 
-      <div class="form-group">
-        <label for="detectionTimeout">Detection Timeout (in seconds):</label>
-        <input type="number" class="form-control" id="detectionTimeout" value="30000">
-      </div>
+            <div class="checkbox-container">
+                <label><input type="checkbox" id="skipTutorial"> Skip Tutorial Screen</label><br>
+                <label><input type="checkbox" id="skipSelfieReview"> Skip Selfie Review Screen</label><br>
+            </div>
+        </div>
 
-      <button type="button" id="startLiveness" class="btn btn-primary btn-block">Start Liveness</button>
 
-      <div id="loader" class="loader my-3" style="display:none;"></div>
+        <div class="section">
+            <h2>Response:</h2>
+            <textarea id="response" readonly placeholder="Response will be displayed here" rows="12"></textarea>
+        </div>
+        <div class="section hidden" id="capturedImageSection">
+            <h2>Captured Image</h2>
+            <img id="capturedImage" src="" alt="Captured Image">
+          </div>
 
-      <div id="vida-container" class="vida-container my-3">Click the button to start liveness detection.</div>
-      <div id="api-response" class="api-response my-3"></div>
-      <!-- Button to load the script -->
-      <button type="button" class="btn btn-primary" id="loadScriptBtn">Load Script</button>
-    </form>
-  </div>
+    </div>
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="environment.js"></script>
-  <script src="decryption.js"></script>
-  <script src="executeScript.js"></script>
-  <script src="getSandbox.js"></script>
-  
-  <script>
-    // Function to dynamically load the script
-    document.getElementById('loadScriptBtn').addEventListener('click', function () {
-      const scriptSrc = document.getElementById('scriptSrc').value;
+    <button id="startLivenessButton" disabled>Start Liveness</button>
 
-      if (scriptSrc) {
-        const existingScript = document.querySelector(`script[src="${scriptSrc}"]`);
-        if (!existingScript) {
-          const script = document.createElement('script');
-          script.src = scriptSrc;
-          script.onload = () => {
-            alert('Script loaded successfully!');
-          };
-          script.onerror = () => {
-            alert('Failed to load the script. Please check the URL.');
-          };
-          document.body.appendChild(script);
-        } else {
-          alert('Script is already loaded.');
-        }
-      } else {
-        alert('Please enter a valid script URL.');
-      }
-    });
-  </script>
-  <script>
-    document.getElementById('startLiveness').addEventListener('click', () => {
-      const loader = document.getElementById('loader');
-      loader.style.display = 'block';
+    
 
-      const responseDiv = document.getElementById('api-response');
-      responseDiv.style.display = 'none';
-      responseDiv.textContent = '';
-
-      setTimeout(() => {
-        loader.style.display = 'none';
-      }, 2000);
-
-      const partnerTransactionId = document.getElementById('partnerTransactionId').value;
-      const token = document.getElementById('token').value;
-      const signingKey = document.getElementById('signingKey').value;
-      const locale = document.getElementById('languageToggle').value;
-      const skipTutorialScreen = document.getElementById('skipTutorial').checked;
-      const skipSelfieReviewScreen = document.getElementById('skipSelfieReview').checked;
-      const cameraFrameShape = document.getElementById('cameraFrameShape').value;
-      const maxRetryAttempts = parseInt(document.getElementById('maxRetryAttempts').value);
-      const detectionTimeout = parseInt(document.getElementById('detectionTimeout').value);
-      const localeConfigs = document.getElementById('localeConfig').value;
-      const themeConfigs = document.getElementById('themeConfig').value;
-      console.log("value->" + token);
-
-      try {
-        const parsedLocaleConfigs = JSON.parse(localeConfigs || '{}');
-        const parsedThemeConfigs = JSON.parse(themeConfigs || '{}');
-
-        const config = { token, // Use the hidden token value 
-            signingKey, 
-            locale, 
-            partnerTransactionId, 
-            localeConfigs: parsedLocaleConfigs, 
-            themeConfigs: parsedThemeConfigs, 
-            workflowConfigs: { 
-                liveness:{
-                skipTutorialScreen:skipTutorialScreen,
-                skipSelfieReviewScreen:skipSelfieReviewScreen,
-                cameraFrameShape,
-                maxRetryAttempts,
-                detectionTimeOut:detectionTimeout,
+    <script>
+        // Function to dynamically load the script
+        document.getElementById('loadScriptButton').addEventListener('click', function () {
+          const scriptSrc = document.getElementById('scriptSrc').value;
+          document.getElementById("startLivenessButton").disabled = false;
+    
+          if (scriptSrc) {
+            const existingScript = document.querySelector(`script[src="${scriptSrc}"]`);
+            if (!existingScript) {
+              const script = document.createElement('script');
+              script.src = scriptSrc;
+              script.onload = () => {
+                alert('Script loaded successfully!');
+              };
+              script.onerror = () => {
+                alert('Failed to load the script. Please check the URL.');
+              };
+              document.body.appendChild(script);
+            } else {
+              alert('Script is already loaded.');
             }
-            }, 
-            onComplete: (apiResponse) => { 
-                console.log('API Response:', apiResponse); 
-                responseDiv.style.display = 'block'; 
-                responseDiv.textContent = `API Response: ${JSON.stringify(apiResponse, null, 2)}`; 
-            }, 
-            onError: (apiResponse) => { 
-                console.error('API Response:', apiResponse); 
-                responseDiv.style.display = 'block'; 
-                responseDiv.textContent = `Error Response: ${JSON.stringify(apiResponse, null, 2)}`;
-            }, 
-            containerId: 'vida-container', 
-        };
+          } else {
+            alert('Please enter a valid script URL.');
+          }
+        });
+      </script>
+      <script>
+        document.getElementById('startLivenessButton').addEventListener('click', () => {
+        
+    
+          const responseDiv = document.getElementById('response');
+          responseDiv.style.display = 'none';
+          responseDiv.textContent = '';
+    
+        
+    
+          const partnerTransactionId = document.getElementById('partnerTransactionId').value;
+          const token = document.getElementById('token').value;
+          const signingKey = document.getElementById('signingKey').value;
+          const locale = document.getElementById('language').value;
+          const skipTutorialScreen = document.getElementById('skipTutorial').checked;
+          const skipSelfieReviewScreen = document.getElementById('skipSelfieReview').checked;
+          const cameraFrameShape = document.getElementById('cameraFrameShape').value;
+          const maxRetryAttempts = parseInt(document.getElementById('maxRetryAttempts').value);
+          const detectionTimeout = parseInt(document.getElementById('detectionTimeout').value);
+          const localeConfigs = document.getElementById('localeConfig').value;
+          const themeConfigs = document.getElementById('themeConfig').value;
+          console.log("value->" + token);
+    
+          try {
+            const parsedLocaleConfigs = JSON.parse(localeConfigs || '{}');
+            const parsedThemeConfigs = JSON.parse(themeConfigs || '{}');
+    
+            const config = { token, // Use the hidden token value 
+                signingKey, 
+                locale, 
+                partnerTransactionId, 
+                localeConfigs: parsedLocaleConfigs, 
+                themeConfigs: parsedThemeConfigs, 
+                workflowConfigs: { 
+                    liveness:{
+                    skipTutorialScreen:skipTutorialScreen,
+                    skipSelfieReviewScreen:skipSelfieReviewScreen,
+                    cameraFrameShape,
+                    maxRetryAttempts,
+                    detectionTimeOut:detectionTimeout,
+                }
+                }, 
+                onComplete: (apiResponse) => { 
+                    console.log('API Response:', apiResponse); 
+                    responseDiv.style.display = 'block'; 
+                    responseDiv.textContent = `API Response: ${JSON.stringify(apiResponse, null, 2)}`; 
+                    handleApiResponse(apiResponse);
+                }, 
+                onError: (apiResponse) => { 
+                    console.error('API Response:', apiResponse); 
+                    responseDiv.style.display = 'block'; 
+                    responseDiv.textContent = `Error Response: ${JSON.stringify(apiResponse, null, 2)}`;
+                    handleApiResponse(apiResponse);
+                }, 
+                containerId: 'vida-container', 
+            };
+    
+            console.log('Config sent to VidaSDK.init:', config);
+            if (VidaSDK) {
+              VidaSDK.init(config)
+            } else {
+              console.error('VidaSDK is not available.');
+            }
+          } catch (error) {
+            console.error('Invalid JSON format:', error);
+            alert('Please enter valid JSON in Locale Configs and Theme Configs.');
+          }
+        });
+      </script>
+      <script src="environment.js"></script>
+      <script src="decryption.js"></script>
+      <script src="executeScript.js"></script>
+      <script src="getSandbox.js"></script>
+      <script>
+        function handleApiResponse(response) {
+  if (response && response.base64Image) { 
+    const base64Image = response.base64Image; 
+    const img = document.getElementById("capturedImage");
+    img.src = base64Image; 
 
-        console.log('Config sent to VidaSDK.init:', config);
-        if (VidaSDK) {
-          VidaSDK.init(config)
-        } else {
-          console.error('VidaSDK is not available.');
-        }
-      } catch (error) {
-        console.error('Invalid JSON format:', error);
-        alert('Please enter valid JSON in Locale Configs and Theme Configs.');
-      }
-    });
-  </script>
+    // Show the section if it was hidden
+    const capturedImageSection = document.getElementById("capturedImageSection");
+    if (capturedImageSection.classList.contains("hidden")) {
+      capturedImageSection.classList.remove("hidden"); 
+    }
+  } else {
+    // Handle the case where base64Image is missing or response is invalid
+    console.error("Error: base64Image not found in response.");
+    // Optionally display an error message to the user
+    // alert("Error: Unable to load the captured image."); 
+  }
+}
+      </script>
+
 </body>
-
 </html>
