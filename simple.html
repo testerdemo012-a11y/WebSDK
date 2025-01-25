@@ -47,7 +47,8 @@
   <div>
   <button id="startLivenessButton" disabled>Start Liveness</button>
 </div>
-  <div id="api-response"></div>
+<br>
+  <div><textarea id="api-response" rows="6" cols="50" hidden> </textarea></div>
 
   <script>
     // Function to dynamically load the script
@@ -84,8 +85,6 @@
       if (VidaSDK) {
         const locale = document.getElementById('language').value;
         const responseDiv = document.getElementById('api-response');
-        responseDiv.style.display = 'none';
-        responseDiv.textContent = '';
         const skipTutorialScreen = document.getElementById('skipTutorial').checked;
         const skipSelfieReviewScreen = document.getElementById('skipSelfieReview').checked;
         const token = document.getElementById('token').value;
@@ -106,7 +105,7 @@
             onComplete: (apiResponse) => {
               console.log('API Response:', apiResponse);
               responseDiv.style.display = 'block';
-              responseDiv.textContent = `API Response: ${JSON.stringify(apiResponse, null, 2)}`;
+              responseDiv.value=`API Response: ${JSON.stringify(apiResponse, null, 2)}`;
             },
             onError: (apiResponse) => {
               console.error('API Response:', apiResponse);
