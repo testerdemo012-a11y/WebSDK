@@ -65,9 +65,19 @@
             box-sizing: border-box;
         }
 
+        .section img {
+            max-width: 200px; /* Adjust as needed */
+            max-height: 300px; /* Adjust as needed */
+            margin: 10px auto; /* Center the image */
+            display: block;
+          }
+
         .section:hover {
             transform: translateY(-5px);
         }
+        .section.hidden {
+            display: none;
+          }
 
         h1 {
             margin-bottom: 30px;
