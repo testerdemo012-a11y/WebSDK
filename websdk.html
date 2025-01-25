@@ -3,52 +3,63 @@
 <head>
     <title>Liveness Detection</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
         body {
-            font-family: sans-serif;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
             text-align: center;
+            margin: 0;
+            padding: 0;
         }
 
         .container {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center; /* Center the sections horizontally */
-            max-width: 800px; /* Limit the width for better responsiveness */
-            margin: 0 auto; /* Center the container horizontally */
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
         .section {
-            border: 1px solid #ccc;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
             margin: 10px;
-            width: 300px; /* Adjust width as needed */
-            border-radius: 5px;
-            box-sizing: border-box; /* Include padding and border in width calculation */
+            width: calc(25% - 40px); /* Four cards in a row with space */
+            border-radius: 8px;
+            transition: transform 0.2s;
+            box-sizing: border-box;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-weight: 500;
         }
 
         h2 {
             margin-bottom: 15px;
+            color: #4CAF50;
         }
 
         input[type="text"],
         input[type="password"],
         input[type="number"],
-        select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 3px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-
+        select,
         textarea {
             width: 100%;
-            height: 100px;
             padding: 10px;
             margin-bottom: 10px;
-            border-radius: 3px;
+            border-radius: 5px;
             border: 1px solid #ccc;
             box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
         }
 
         button {
@@ -56,22 +67,41 @@
             color: white;
             padding: 10px 20px;
             border: none;
-            border-radius: 3px;
+            border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
         }
 
         .checkbox-container {
             display: flex;
             flex-direction: column;
+            align-items: start;
         }
 
         .checkbox-container input[type="checkbox"] {
             margin-right: 5px;
         }
 
-        /* Add some basic styling for the header */
-        h1 {
-            margin-bottom: 30px;
+        @media (max-width: 1200px) {
+            .section {
+                width: calc(33.33% - 40px); /* Three cards in a row with space */
+            }
+        }
+
+        @media (max-width: 992px) {
+            .section {
+                width: calc(50% - 40px); /* Two cards in a row with space */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section {
+                width: calc(100% - 40px); /* Full width on small screens */
+            }
         }
     </style>
 </head>
@@ -83,9 +113,9 @@
 
         <div class="section">
             <h2>Select Environment</h2>
-            <input type="radio" name="environment" value="QA"> QA<br>
-            <input type="radio" name="environment" value="SANDBOX"> SANDBOX<br>
-            <input type="radio" name="environment" value="PROD"> PROD
+            <label><input type="radio" name="environment" value="QA"> QA</label><br>
+            <label><input type="radio" name="environment" value="SANDBOX"> SANDBOX</label><br>
+            <label><input type="radio" name="environment" value="PROD"> PROD</label>
         </div>
 
         <div class="section">
@@ -103,12 +133,12 @@
 
         <div class="section">
             <h2>Locale Config (JSON)</h2>
-            <textarea id="localeConfig"></textarea>
+            <textarea id="localeConfig" placeholder="Enter Locale Config"></textarea>
         </div>
 
         <div class="section">
             <h2>Theme Config (JSON)</h2>
-            <textarea id="themeConfig"></textarea>
+            <textarea id="themeConfig" placeholder="Enter Theme Config"></textarea>
         </div>
 
         <div class="section">
@@ -122,26 +152,24 @@
             <h2>Choose Language</h2>
             <select id="language">
                 <option value="English">English</option>
-                </option>
             </select>
             <h2>Frame Shape</h2>
             <select id="frameShape">
                 <option value="Oval">Oval</option>
-                </option>
             </select>
         </div>
 
         <div class="section">
             <h2>What Do you want to Skip?</h2>
             <div class="checkbox-container">
-                <input type="checkbox" id="skipTutorial"> Skip Tutorial Screen<br>
-                <input type="checkbox" id="skipSelfieReview"> Skip Selfie Review Screen<br>
+                <label><input type="checkbox" id="skipTutorial"> Skip Tutorial Screen</label><br>
+                <label><input type="checkbox" id="skipSelfieReview"> Skip Selfie Review Screen</label><br>
             </div>
         </div>
 
         <div class="section">
             <h2>Response:</h2>
-            <textarea id="response" readonly></textarea>
+            <textarea id="response" readonly placeholder="Response will be displayed here"></textarea>
         </div>
 
     </div>
