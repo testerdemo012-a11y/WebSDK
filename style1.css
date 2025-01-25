@@ -9,6 +9,41 @@
             margin: 0;
             padding: 0;
         }
+        .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            padding: 5px 0;
+            border-radius: 3px;
+            position: absolute;
+            z-index: 1;
+          }
+          #startLivenessButton {
+            background-color: #4CAF50; /* Original background color */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+          }
+          #startLivenessButton:hover {
+            background-color: #3e8e41; /* Darker green on hover */
+          }
+          
+          #startLivenessButton:hover .tooltiptext {
+            visibility: visible;
+          }
+          #startLivenessButton[disabled] {
+            background-color: #c8e6c9; /* Light green when disabled */
+            color: #666; /* Gray text when disabled */
+            cursor: default; /* Change cursor to default */
+          }
+          #startLivenessButton[disabled]:hover {
+            background-color: #78b27a; /* Keep original color when disabled */
+            cursor: default; /* Change cursor to default */
+          }
 
         .container {
             display: flex;
