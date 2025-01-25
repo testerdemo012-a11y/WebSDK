@@ -176,8 +176,8 @@
       console.log("value->" + token);
 
       try {
-        const parsedLocaleConfigs = JSON.parse(localeConfig || '{}');
-        const parsedThemeConfigs = JSON.parse(themeConfig || '{}');
+        const parsedLocaleConfigs = JSON.parse(localeConfigs || '{}');
+        const parsedThemeConfigs = JSON.parse(themeConfigs || '{}');
 
         const config = { token, // Use the hidden token value 
             signingKey, 
