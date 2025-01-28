@@ -130,7 +130,6 @@
           const detectionTimeout = parseInt(document.getElementById('detectionTimeout').value);
           const localeConfigs = document.getElementById('localeConfig').value;
           const themeConfigs = document.getElementById('themeConfig').value;
-          console.log("value->" + token);
     
           try {
             const parsedLocaleConfigs = JSON.parse(localeConfigs || '{}');
@@ -166,7 +165,7 @@
                 containerId: 'vida-container', 
             };
     
-            console.log('Config sent to VidaSDK.init:', config);
+           // console.log('Config sent to VidaSDK.init:', config);
             if (VidaSDK) {
               VidaSDK.init(config)
             } else {
