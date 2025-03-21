@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch API and Display Image</title>
+</head>
+<body>
+    <h2>Fetch Face Liveliness Data</h2>
+    
+    <label for="jwt">JWT:</label>
+    <input type="text" id="jwt" placeholder="Enter JWT" required>
+    <br><br>
+
+    <label for="transactionId">Transaction ID:</label>
+    <input type="text" id="transactionId" placeholder="Enter Transaction ID" required>
+    <br><br>
+
+    <button onclick="fetchApiData()">Fetch</button>
+    
+    <div id="response-container">
+        <h3>API Response:</h3>
+        <pre id="response-output"></pre>
+    </div>
+
+    <div id="image-container">
+        <h3>Decoded Image:</h3>
+        <img id="image" style="max-width: 500px; display: none;">
+    </div>
+
+    <script>
+        async function fetchApiData() {
+            const jwt = document.getElementById('jwt').value;
+            const transactionId = document.getElementById('transactionId').value;
+            const url = `https://qa-liveness.np.vida.id/biometrics/v2/services/face/liveliness?transactionId=393ad30b-4e78-4872-a92c-77d808568376`;
+            
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${jwt}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('response-output').textContent = JSON.stringify(data, null, 2);
+
+                    const base64Image = data.data.image;
+                    displayImage(base64Image);
+                } else {
+                    alert('Failed to fetch data: ' + response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching API:', error);
+                alert('An error occurred while fetching the data.');
+            }
+        }
+
+        function displayImage(base64Image) {
+            const imageElement = document.getElementById('image');
+            imageElement.style.display = 'block';
+            imageElement.src = 'data:image/jpeg;base64,' + base64Image;
+        }
+    </script>
+</body>
+</html>
