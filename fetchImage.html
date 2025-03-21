@@ -32,7 +32,7 @@
         async function fetchApiData() {
             const jwt = document.getElementById('jwt').value;
             const transactionId = document.getElementById('transactionId').value;
-            const url = `https://qa-liveness.np.vida.id/biometrics/v2/services/face/liveliness?transactionId=393ad30b-4e78-4872-a92c-77d808568376`;
+            const url = `https://qa-services.np.vida.id/biometrics/v2/services/face/liveliness?transactionId=393ad30b-4e78-4872-a92c-77d808568376`;
             
             try {
                 const response = await fetch(url, {
