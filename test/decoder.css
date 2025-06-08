@@ -253,14 +253,22 @@
             font-style: italic;
         }
 
+
         .threat-indicator {
+            float: left; /* Keep floated left */
             display: inline-block;
             padding: 0.25rem 0.5rem;
             border-radius: 4px;
             font-size: 0.75rem;
             font-weight: 600;
-            margin-right: 0.5rem;
+            margin-right: 0.5rem; /* Space between indicators */
             transition: var(--transition);
+            text-align: left; /* Force text alignment to left */
+            width: auto; /* Let width adjust to content */
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+        .threat-indicator:not(:first-child) {
+            margin-left: 0;       /* Remove left margin for subsequent indicators */
         }
 
         .threat-danger {
@@ -284,6 +292,7 @@
         }
 
         .result-section {
+            overflow: hidden; /* Contains floated elements */
             margin-bottom: 1.5rem;
             padding-bottom: 1.5rem;
             border-bottom: 1px dashed var(--border);
@@ -293,6 +302,9 @@
             border-bottom: none;
             margin-bottom: 0;
             padding-bottom: 0;
+        }
+        .result-container pre {
+            margin-right: 0.5rem;
         }
 
         pre {
