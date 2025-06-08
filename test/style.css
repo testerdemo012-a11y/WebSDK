@@ -182,3 +182,22 @@
                 grid-template-columns: 1fr;
             }
         }
+        footer {
+            margin-top: 60px;
+            padding: 20px;
+            text-align: center;
+            background-color: #fafafa;
+            color: #777;
+            font-size: 13px;
+            border-top: 1px solid #e0e0e0;
+            box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.03);
+            border-radius: 0 0 10px 10px;
+        }
+        footer a {
+            color: #0560ea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
