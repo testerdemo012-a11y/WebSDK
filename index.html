@@ -65,6 +65,12 @@
                 <label><input type="checkbox" id="skipTutorial"> Skip Tutorial Screen</label><br>
                 <label><input type="checkbox" id="skipSelfieReview"> Skip Selfie Review Screen</label><br>
             </div>
+
+             <h2>WorkFlow</h2>
+            <select id="workFlow">
+                <option value="liveness">Liveness</option>
+                <option value="user-onboarding-auth">One-Click Onboarding</option>
+            </select>
         </div>
 
 
@@ -130,6 +136,7 @@
           const detectionTimeout = parseInt(document.getElementById('detectionTimeout').value);
           const localeConfigs = document.getElementById('localeConfig').value;
           const themeConfigs = document.getElementById('themeConfig').value;
+          const workflow = document.getElementById('workFlow').value;
     
           try {
             const parsedLocaleConfigs = JSON.parse(localeConfigs || '{}');
@@ -141,6 +148,11 @@
                 partnerTransactionId, 
                 localeConfigs: parsedLocaleConfigs, 
                 themeConfigs: parsedThemeConfigs, 
+                workflow,
+                partner: {
+                  logo: "https://vida-assets.s3.ap-south-1.amazonaws.com/linkedin_icon.png",
+                  name: "Linkedin",
+                },
                 workflowConfigs: { 
                     liveness:{
                     skipTutorialScreen:skipTutorialScreen,
