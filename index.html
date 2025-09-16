@@ -44,14 +44,19 @@
             <h2>Theme Config (JSON)</h2>
             <textarea id="themeConfig" placeholder="Enter Theme Config" rows="10"></textarea>
         </div>
+        <div class="section">
+        <h3>Additional Workflow Config</h3>
+        <textarea id="workflowConfig" placeholder="Enter workflowConfig" rows="5"></textarea>
+        <h3>Additional liveness Config</h3>
+        <textarea id="livenessConfig" placeholder="Enter livenessConfig" rows="5"></textarea>
+        </div>
 
         <div class="section">
-            <h3>Max Retry Attempts</h3>
+            <h2>Max Retry Attempts</h2>
             <input type="number" id="maxRetryAttempts" placeholder="Enter Max Retry Attempts" value="1">
-            <h3>Detection Timeout (in milSec)</h3>
+            <h2>Detection Timeout (in milSec)</h2>
             <input type="number" id="detectionTimeout" placeholder="Enter Detection Timeout" value="30000">
-            <h3>Additional Workflow Config</h3>
-            <textarea id="workflowConfig" placeholder="Enter workflowConfig" rows="5"></textarea>
+            
         </div>
 
         <div class="section">
@@ -152,8 +157,10 @@
           const themeConfigs = document.getElementById('themeConfig').value;
           const workflow = document.getElementById('workFlow').value;
           const workflowConfig = document.getElementById('workflowConfig').value;
+          const livenessConfig = document.getElementById('livenessConfig').value;
           // Convert the string to an object
           const dynamicConfig = Function('"use strict";return ({' + workflowConfig + '})')();
+          const livenessDynamicConfig = Function('"use strict";return ({' + livenessConfig + '})')();
     
           try {
             const parsedLocaleConfigs = JSON.parse(localeConfigs || '{}');
@@ -178,7 +185,8 @@
                     cameraFrameShape,
                     maxRetryAttempts,
                     detectionTimeOut:detectionTimeout,
-                }
+                    ...livenessDynamicConfig
+                },
                 ...dynamicConfig}, 
                 onComplete: (apiResponse) => { 
                     console.log('API Response:', apiResponse); 
